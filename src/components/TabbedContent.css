@@ -1,0 +1,208 @@
+.tabbed-content {
+  margin-top: 2rem;
+  padding: 0 1rem;
+  max-width: 100%;
+  text-align: left;
+}
+
+.tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid #333;
+  margin-bottom: 2rem;
+  justify-content: flex-start;
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab.active {
+  color: #E0E0E0;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #E0E0E0;
+}
+
+.content-section {
+  color: #E0E0E0;
+  line-height: 1.6;
+  display: flex;
+  width: 100%;
+  align-items: start;
+  position: relative;
+}
+
+.trend-info-column {
+  width: 20%;
+  padding-left: 20px;
+  border-left: 1px solid #333;
+  background-color: #1E1E1E;
+  min-height: 100%;
+}
+
+.image-column {
+  width: 200px;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.image-column img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.text-column {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.text-column h2:first-child {
+  margin-top: 0;
+}
+
+.text-column h2 {
+  font-size: 1.2rem;
+  margin: 2rem 0 5px;
+  color: #E0E0E0;
+}
+
+.text-column p {
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.text-column ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.text-column li {
+  margin-bottom: 5px;
+}
+
+.content-section strong {
+  color: #E0E0E0;
+}
+
+.read-more {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 5px;
+  align-self: flex-end;
+}
+
+.read-more:hover {
+  color: #E0E0E0;
+}
+
+.references-section {
+  margin-top: 40px;
+  padding: 0 20px;
+  width: 80%; /* Match the main content width */
+}
+
+.references-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.reference-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.reference-tabs .tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background: #333;
+  color: #E0E0E0;
+  cursor: pointer;
+}
+
+.reference-tabs .tab.active {
+  background: #666;
+}
+
+.view-btn, .sort-btn {
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.references-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.reference-card {
+  background: #1E1E1E;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.reference-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.reference-card h3 {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #E0E0E0;
+}
+
+.reference-link {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.comments-section {
+  margin-top: 40px;
+  padding: 0 20px;
+  width: 80%; /* Match the main content width */
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.no-comments {
+  color: #888;
+} 

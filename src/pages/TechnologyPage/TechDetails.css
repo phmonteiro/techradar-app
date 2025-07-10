@@ -1,0 +1,87 @@
+.tech-details {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.tech-details h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tabbed-content {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.text-column {
+  flex: 2 1 0;
+  min-width: 0;
+}
+
+.trend-info-column {
+  min-width: 400px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.trend-section {
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin: 0;
+}
+
+.trend-section p {
+  white-space: normal;
+  overflow-x: visible;
+  text-overflow: unset;
+} 
