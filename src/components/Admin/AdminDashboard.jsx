@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     if (!token) return;
 
     // Fetch technologies count
-    axios.get('http://localhost:3000/api/technologies/count', {
+    axios.get('${import.meta.env.VITE_API_URL}api/technologies/count', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
       });
 
     // Fetch comments count
-    axios.get('http://localhost:3000/api/comments/count', {
+    axios.get('${import.meta.env.VITE_API_URL}api/comments/count', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
       });
 
     // Fetch references count
-    axios.get('http://localhost:3000/api/references/count', {
+    axios.get('${import.meta.env.VITE_API_URL}api/references/count', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {

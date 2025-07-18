@@ -22,7 +22,7 @@ const TechnologyView = () => {
   useEffect(() => {
     // Fetch the technology details using the label
     setIsLoading(true);
-    axios.get(`http://localhost:3000/api/technologies/${label}`,
+    axios.get(`${import.meta.env.VITE_API_URL}api/technologies/${label}`,
       {
         headers: {Authorization: `Bearer ${token}` }
       }
@@ -43,7 +43,7 @@ const TechnologyView = () => {
   const handleUpdateStage = async (technologyLabel, newStage) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/technologies/${technologyLabel}/stage`,
+        `${import.meta.env.VITE_API_URL}api/technologies/${technologyLabel}/stage`,
         { stage: newStage },
         { headers: { Authorization: `Bearer ${token}` } }
       );

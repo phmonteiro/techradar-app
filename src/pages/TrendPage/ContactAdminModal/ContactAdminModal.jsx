@@ -14,7 +14,7 @@ const ContactAdminModal = ({ isOpen, onClose, trendLabel }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:3000/api/contact-admin', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}api/contact-admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

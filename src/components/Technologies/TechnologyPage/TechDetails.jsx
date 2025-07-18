@@ -19,7 +19,7 @@ const TechDetails = ({ technology }) => {
   useEffect(() => {
     if (label) {
       // Fetch comments for the technology if label is available
-      fetch(`http://localhost:3000/api/references/technology/${label}`)
+      fetch(`${import.meta.env.VITE_API_URL}api/references/technology/${label}`)
       .then(response => response.json())
       .then(data => setReferences(data.data))
       .catch(error => console.error("Error fetching references:", error));

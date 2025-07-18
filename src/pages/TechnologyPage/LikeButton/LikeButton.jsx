@@ -14,7 +14,7 @@ const LikeButton = ({ technologyLabel, isLiked, setIsLiked }) => {
   const fetchLikeCount = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/technologies/${technologyLabel}/likes`,
+        `${import.meta.env.VITE_API_URL}api/technologies/${technologyLabel}/likes`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -28,7 +28,7 @@ const LikeButton = ({ technologyLabel, isLiked, setIsLiked }) => {
   const fetchLikeStatus = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/technologies/${technologyLabel}/likes/status`,
+        `${import.meta.env.VITE_API_URL}api/technologies/${technologyLabel}/likes/status`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -42,7 +42,7 @@ const LikeButton = ({ technologyLabel, isLiked, setIsLiked }) => {
   const handleLike = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/technologies/${technologyLabel}/likes`,
+        `${import.meta.env.VITE_API_URL}api/technologies/${technologyLabel}/likes`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` }

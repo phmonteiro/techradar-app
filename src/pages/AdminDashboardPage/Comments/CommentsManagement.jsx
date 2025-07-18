@@ -28,7 +28,7 @@ const CommentsManagement = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `http://localhost:3000/api/admin/comments?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}api/admin/comments?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -80,7 +80,7 @@ const CommentsManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.delete(
-        `http://localhost:3000/api/admin/comments/${commentToDelete.Id}`,
+        `${import.meta.env.VITE_API_URL}api/admin/comments/${commentToDelete.Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -100,7 +100,7 @@ const CommentsManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.put(
-        `http://localhost:3000/api/admin/comments/${id}/approve`,
+        `${import.meta.env.VITE_API_URL}api/admin/comments/${id}/approve`,
         { approved: !currentStatus },
         {
           headers: {

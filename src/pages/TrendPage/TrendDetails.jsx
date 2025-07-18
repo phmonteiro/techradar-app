@@ -19,7 +19,7 @@ const TrendDetails = ({ trend }) => {
   useEffect(() => {
     if (label) {
       // Fetch references for the trend if label is available
-      fetch(`http://localhost:3000/api/references/trend/${trend.Label}`)
+      fetch(`${import.meta.env.VITE_API_URL}api/references/trend/${trend.Label}`)
       .then(response => response.json())
       .then(data => setReferences(data.data))
       .catch(error => console.error("Error fetching references:", error));

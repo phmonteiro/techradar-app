@@ -17,7 +17,7 @@ const LikeButton = ({ data, type }) => {
 
   const fetchLikeStatus = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/likes/status`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/likes/status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const LikeButton = ({ data, type }) => {
 
   const fetchLikeCount = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/likes/count`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/likes/count`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const LikeButton = ({ data, type }) => {
       const endpoint = isLiked ? 'unlike' : 'like';
       console.log('endpoint');
       console.log(endpoint);
-      const response = await fetch(`http://localhost:3000/api/likes/${endpoint}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/likes/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

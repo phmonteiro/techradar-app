@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '${import.meta.env.VITE_API_URL}api';
 
 // Remove the global token variable
 // const token = localStorage.getItem('authToken');

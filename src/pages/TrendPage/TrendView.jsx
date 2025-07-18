@@ -22,7 +22,7 @@ const TrendView = () => {
   useEffect(() => {
     // Fetch the trend details using the label
     setIsLoading(true);
-    axios.get(`http://localhost:3000/api/trends/${label}`,
+    axios.get(`${import.meta.env.VITE_API_URL}api/trends/${label}`,
       {
         headers: {Authorization: `Bearer ${token}` }
       }
@@ -43,7 +43,7 @@ const TrendView = () => {
   const handleUpdateStage = async (label, newStage) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/trends/${label}/stage`,
+        `${import.meta.env.VITE_API_URL}api/trends/${label}/stage`,
         { stage: newStage },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -25,7 +25,7 @@ const CommentForm = () => {
     const fetchTechnologies = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('http://localhost:3000/api/admin/technologies', {
+        const response = await axios.get('${import.meta.env.VITE_API_URL}api/admin/technologies', {
           headers: { Authorization: `Bearer ${token}` }
         }  );
         setTechnologies(response.data.technologies);
@@ -45,7 +45,7 @@ const CommentForm = () => {
     const fetchComment = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get(`http://localhost:3000/api/admin/comments/${id}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}api/admin/comments/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setForm(response.data);
@@ -96,13 +96,13 @@ const CommentForm = () => {
       
       if (id) {
         // Update existing comment
-        await axios.put(`http://localhost:3000/api/admin/comments/${id}`, form, {
+        await axios.put(`${import.meta.env.VITE_API_URL}api/admin/comments/${id}`, form, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccess('Comment updated successfully!');
       } else {
         // Create new comment
-        await axios.post('http://localhost:3000/api/admin/comments', form, {
+        await axios.post('${import.meta.env.VITE_API_URL}api/admin/comments', form, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccess('Comment created successfully!');

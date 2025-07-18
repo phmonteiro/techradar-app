@@ -28,7 +28,7 @@ const ReferencesManagement = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `http://localhost:3000/api/admin/references?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}api/admin/references?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -80,7 +80,7 @@ const ReferencesManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.delete(
-        `http://localhost:3000/api/admin/references/${referenceToDelete.Id}`,
+        `${import.meta.env.VITE_API_URL}api/admin/references/${referenceToDelete.Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
