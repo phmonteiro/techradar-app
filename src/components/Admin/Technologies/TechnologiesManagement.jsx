@@ -50,7 +50,7 @@ const TechnologiesManagement = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}api/admin/technologies?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/technologies?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -102,7 +102,7 @@ const TechnologiesManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}api/admin/technologies/${techToDelete.Label}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/technologies/${techToDelete.Label}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

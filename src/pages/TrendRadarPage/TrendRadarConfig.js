@@ -10,7 +10,7 @@ export const TrendRadarConfig = () => {
     const fetchConfig = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('${import.meta.env.VITE_API_URL}api/trend-radar-config');
+        const response = await axios.get('${import.meta.env.VITE_API_URL}/api/trend-radar-config');
         setConfig(response.data);
         setError(null);
       } catch (err) {

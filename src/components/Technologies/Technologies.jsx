@@ -13,7 +13,7 @@ const Technologies = () => {
 
   useEffect(() => {
     // Fetch the list of technologies from the backend
-    axios.get('${import.meta.env.VITE_API_URL}api/technologies')
+    axios.get('${import.meta.env.VITE_API_URL}/api/technologies')
       .then(response => {
         setTechnologies(response.data.data);
       })

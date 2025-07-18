@@ -20,7 +20,7 @@ const ContactAdminModal = ({ isOpen, onClose, label }) => {
 
     try {
       const response = await axios.post(
-        '${import.meta.env.VITE_API_URL}api/contact-admin',
+        '${import.meta.env.VITE_API_URL}/api/contact-admin',
         {
           email: currentUser.email,
           subject,

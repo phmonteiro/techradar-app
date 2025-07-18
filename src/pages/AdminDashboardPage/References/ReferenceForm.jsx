@@ -26,7 +26,7 @@ const ReferenceForm = () => {
     const fetchTechnologies = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('${import.meta.env.VITE_API_URL}api/admin/technologies', {
+        const response = await axios.get('${import.meta.env.VITE_API_URL}/api/admin/technologies', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTechnologies(response.data.technologies);
@@ -46,7 +46,7 @@ const ReferenceForm = () => {
     const fetchReference = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}api/admin/references/${id}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/references/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -106,13 +106,13 @@ const ReferenceForm = () => {
       
       if (id) {
         // Update existing reference
-        await axios.put(`${import.meta.env.VITE_API_URL}api/admin/references/${id}`, form, {
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/references/${id}`, form, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccess('Reference updated successfully!');
       } else {
         // Create new reference
-        await axios.post('${import.meta.env.VITE_API_URL}api/admin/references', form, {
+        await axios.post('${import.meta.env.VITE_API_URL}/api/admin/references', form, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccess('Reference created successfully!');

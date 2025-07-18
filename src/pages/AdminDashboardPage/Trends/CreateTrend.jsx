@@ -47,7 +47,7 @@ const CreateTrend = () => {
           }
           
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}api/admin/trends/${label}`,
+            `${import.meta.env.VITE_API_URL}/api/admin/trends/${label}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`
@@ -170,7 +170,7 @@ const CreateTrend = () => {
       if (isEditing) {
         // Update existing trend
         await axios.put(
-          `${import.meta.env.VITE_API_URL}api/admin/trends/${label}`,
+          `${import.meta.env.VITE_API_URL}/api/admin/trends/${label}`,
           submissionData,
           {
             headers: {
@@ -183,7 +183,7 @@ const CreateTrend = () => {
       } else {
         // Create new trend
         await axios.post(
-          '${import.meta.env.VITE_API_URL}api/admin/trends',
+          '${import.meta.env.VITE_API_URL}/api/admin/trends',
           submissionData,
           {
             headers: {

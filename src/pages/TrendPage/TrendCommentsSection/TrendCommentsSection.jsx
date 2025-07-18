@@ -26,7 +26,7 @@ const TrendCommentsSection = ({ label }) => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}api/comments/trend/${label}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/comments/trend/${label}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -52,7 +52,7 @@ const TrendCommentsSection = ({ label }) => {
     if (!newComment.trim() || !label) return;
 
     try {
-      const response = await fetch('${import.meta.env.VITE_API_URL}api/comments', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

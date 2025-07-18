@@ -30,7 +30,7 @@ const TechnologyImageUpload = ({ technologyId, onImageUploaded, currentImageUrl 
     setUploading(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}api/technologies/${technologyId}/image`, 
+        `${import.meta.env.VITE_API_URL}/api/technologies/${technologyId}/image`, 
         formData,
         {
           headers: {

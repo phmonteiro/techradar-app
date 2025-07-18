@@ -47,7 +47,7 @@ const CreateTechnology = () => {
           }
           
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}api/admin/technologies/${label}`,
+            `${import.meta.env.VITE_API_URL}/api/admin/technologies/${label}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`
@@ -170,7 +170,7 @@ const CreateTechnology = () => {
       if (isEditing) {
         // Update existing technology
         await axios.put(
-          `${import.meta.env.VITE_API_URL}api/admin/technologies/${label}`,
+          `${import.meta.env.VITE_API_URL}/api/admin/technologies/${label}`,
           submissionData,
           {
             headers: {
@@ -183,7 +183,7 @@ const CreateTechnology = () => {
       } else {
         // Create new technology
         await axios.post(
-          '${import.meta.env.VITE_API_URL}api/admin/technologies',
+          '${import.meta.env.VITE_API_URL}/api/admin/technologies',
           submissionData,
           {
             headers: {
