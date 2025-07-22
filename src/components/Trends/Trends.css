@@ -1,0 +1,84 @@
+/* Add your CSS styles for the Technologies component here */
+.technologies {
+  padding: 20px;
+}
+
+.technologies ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.technologies li {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.technologies h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.technologies p {
+  margin: 10px 0 0;
+}
+
+.table-responsive {
+  overflow-x: visible;
+  padding: 0;
+  margin: 0;
+}
+
+.truncate-text {
+  max-width: 150px; /* Adjust this value as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Add tooltips for truncated text */
+.truncate-text:hover {
+  position: relative;
+}
+
+.truncate-text:hover:after {
+  content: attr(data-title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 1;
+  background: white;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  white-space: normal;
+  width: 250px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Add additional styling for the table */
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table th, .table td {
+  padding: 8px;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}

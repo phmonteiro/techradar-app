@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ProgressTrack.css';  // Assuming you have a CSS file
 
-const ProgressTrack = ({ currentStage = 'Planned', isAdmin = false, technologyLabel, onStageUpdate }) => {
+const ProgressTrack = ({ currentStage = 'Planned', isAdmin = false, label, onStageUpdate }) => {
   const [showModal, setShowModal] = useState(false);
   const stages = ['In Place', 'Proofing', 'Planned', 'Possible'];
   const [selectedStage, setSelectedStage] = useState(currentStage);
@@ -17,7 +17,7 @@ const ProgressTrack = ({ currentStage = 'Planned', isAdmin = false, technologyLa
 
   const handleStageUpdate = async () => {
     if (onStageUpdate) {
-      await onStageUpdate(technologyLabel, selectedStage);
+      await onStageUpdate(label, selectedStage);
     }
     setShowModal(false);
   };

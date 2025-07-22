@@ -1,38 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import './Technologies.css'; // Import custom CSS
+import './Trends.css'; // Import custom CSS
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom'; // Changed from useHistory to useNavigate
 
-const Technologies = () => {
-  const [technologies, setTechnologies] = useState([]);
+const Trends = () => {
+  const [trends, setTrends] = useState([]);
   const navigate = useNavigate(); // Changed from history to navigate
 
   useEffect(() => {
-    // Fetch the list of technologies from the backend
-    axios.get(`${import.meta.env.VITE_API_URL}/api/technologies`)
+    // Fetch the list of trends from the backend
+    axios.get(`${import.meta.env.VITE_API_URL}/api/trends`)
       .then(response => {
-        setTechnologies(response.data.data);
-      })
+        setTrends(response.data.data);
+      })      
       .catch(error => {
-        console.error("Error fetching technologies:", error);
+        console.error("Error fetching trends:", error);
       });
   }, []);
 
   // Function to handle viewing a technology
-  const handleViewTechnology = (tech) => {
+  const handleViewTrend = (trend) => {
     // Navigate to the tech details page
-    navigate(`/technologies/${tech.Label}`); // Changed from history.push to navigate
+    navigate(`/trends/${trend.Label}`); // Changed from history.push to navigate
   };
 
   return (
-    <div className="technologies">
+    <div className="trends">
       <Navbar />
       <div className="container-fluid p-0 m-0">
-        <h1>Technologies</h1>
+        <h1>Trends</h1>
         <div>
           <table className="table table-striped">
             <thead>
@@ -52,7 +52,7 @@ const Technologies = () => {
               </tr>
             </thead>
             <tbody>
-              {technologies.map(tech => (
+              {trends.map(tech => (
                 <tr key={tech.ID}>
                   <td className="truncate-text">{tech.Name}</td>
                   <td className="truncate-text">{tech.Abstract}</td>
@@ -68,7 +68,7 @@ const Technologies = () => {
                   <td className="truncate-text action-cell">
                     <FontAwesomeIcon 
                       icon={faEye} 
-                      onClick={() => handleViewTechnology(tech)}
+                      onClick={() => handleViewTrend(trend)}
                       className="action-icon"
                     />
                   </td>
@@ -82,4 +82,4 @@ const Technologies = () => {
   );
 };
 
-export default Technologies;
+export default Trends;

@@ -16,6 +16,7 @@ const Navbar = () => {
         <Link to="/trendradar">Trend Radar</Link>
       )}
       <Link to="/technologies">Technologies</Link>
+      <Link to="/trends">Trends</Link>
       {currentUser && currentUser.role === 'Admin' && (
         <Link to="/admin">Admin Dashboard</Link>
       )}

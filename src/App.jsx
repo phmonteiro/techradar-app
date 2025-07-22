@@ -17,6 +17,7 @@ import TechnologyView from './pages/TechnologyPage/TechnologyView';
 import Technologies from './components/Technologies/Technologies';
 import EditTechnology from './pages/AdminDashboardPage/Technologies/EditTechnology';
 import TrendView from './pages/TrendPage/TrendView';
+import Trends from './components/Trends/Trends';
 import TrendsManagement from './pages/AdminDashboardPage/Trends/TrendsManagement';
 import CreateTrend from './pages/AdminDashboardPage/Trends/CreateTrend';
 // Import other components as needed
@@ -106,6 +107,12 @@ function App() {
           <Route path="/technologies" element={
             <ProtectedRoute requiredRole="Viewer">
               <Technologies />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/trends" element={
+            <ProtectedRoute requiredRole="Viewer">
+              <Trends />
             </ProtectedRoute>
           } />
 

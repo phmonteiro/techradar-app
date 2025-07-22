@@ -26,6 +26,7 @@ const CommentsSection = ({ label, type }) => {
       console.log("fetchComments");
       console.log(type);
       console.log(label);
+      console.log(`Making request to: ${API_URL}/api/comments/${type}/${label}`);
       const response = await axios.get(`${API_URL}/api/comments/${type}/${label}`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -33,7 +34,7 @@ const CommentsSection = ({ label, type }) => {
       });
       console.log("response.data");
       console.log(response.data);
-      setComments(response.data.data || []);
+      setComments(Array.isArray(response.data.data) ? response.data.data : []);
       setError(null);
     } catch (error) {
       setError('Failed to load comments. Please try again later.');
@@ -77,6 +78,9 @@ const CommentsSection = ({ label, type }) => {
       setIsLoading(false);
     }
   };
+
+  console.log("comments "+comments?.length);
+  console.log("comments value before render:", comments);
 
   return (
     <div className="comments-section">
