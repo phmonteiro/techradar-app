@@ -183,7 +183,7 @@ const CreateTrend = () => {
       } else {
         // Create new trend
         await axios.post(
-          '${import.meta.env.VITE_API_URL}/api/admin/trends',
+          `${import.meta.env.VITE_API_URL}/api/admin/trends`,
           submissionData,
           {
             headers: {
