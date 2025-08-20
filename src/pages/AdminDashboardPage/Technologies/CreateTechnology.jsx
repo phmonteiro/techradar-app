@@ -183,7 +183,7 @@ const CreateTechnology = () => {
       } else {
         // Create new technology
         await axios.post(
-          '${import.meta.env.VITE_API_URL}/api/admin/technologies',
+          `${import.meta.env.VITE_API_URL}/api/admin/technologies`,
           submissionData,
           {
             headers: {
