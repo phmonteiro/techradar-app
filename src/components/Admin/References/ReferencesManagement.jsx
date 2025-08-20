@@ -104,7 +104,7 @@ const ReferencesManagement = () => {
           </Link>
           <h2>Manage References</h2>
         </div>
-        <Link to="/admin/references/create" className="create-button">
+        <Link to="/admin/references/add" className="create-button">
           <FontAwesomeIcon icon={faPlus} /> New Reference
         </Link>
       </div>

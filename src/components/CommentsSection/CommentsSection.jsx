@@ -23,17 +23,11 @@ const CommentsSection = ({ label, type }) => {
     }
     try {
       setIsCommentsLoading(true);
-      console.log("fetchComments");
-      console.log(type);
-      console.log(label);
-      console.log(`Making request to: ${API_URL}/api/comments/${type}/${label}`);
       const response = await axios.get(`${API_URL}/api/comments/${type}/${label}`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
       });
-      console.log("response.data");
-      console.log(response.data);
       setComments(Array.isArray(response.data.data) ? response.data.data : []);
       setError(null);
     } catch (error) {
@@ -64,6 +58,7 @@ const CommentsSection = ({ label, type }) => {
       await axios.post(`${API_URL}/api/comments/${type}/${label}`, {
         text: commentText,
         label,
+        type
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -78,9 +73,6 @@ const CommentsSection = ({ label, type }) => {
       setIsLoading(false);
     }
   };
-
-  console.log("comments "+comments?.length);
-  console.log("comments value before render:", comments);
 
   return (
     <div className="comments-section">

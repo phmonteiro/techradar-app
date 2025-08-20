@@ -85,17 +85,27 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/admin/references/create" element={
+          <Route path="/admin/references/add/:type/:label" element={
             <ProtectedRoute requiredRole="Admin">
               <ReferenceForm />
             </ProtectedRoute>
           } />
 
-          <Route path="/admin/references/add/:label" element={
+          <Route path="/admin/references/add" element={
             <ProtectedRoute requiredRole="Admin">
               <ReferenceForm />
             </ProtectedRoute>
           } />
+
+          <Route path="/admin/references/edit/:id" element={
+            <ProtectedRoute requiredRole="Admin">
+              <ReferenceForm />
+            </ProtectedRoute>
+          } />
+
+
+
+
           
           {/* Viewer routes - require at least Viewer role */}
           <Route path="/technologies/:label" element={

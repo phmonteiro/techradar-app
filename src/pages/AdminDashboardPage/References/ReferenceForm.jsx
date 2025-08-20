@@ -1,62 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import '../AdminStyles.css';
 
+const FORM_MODES = {
+  EDIT: 'edit',        // When id is present
+  ADD_TO_ITEM: 'add',  // When type and label are present
+  CREATE_NEW: 'new'    // When nothing is present
+};
+
 const ReferenceForm = () => {
-  const { id } = useParams();
-  const { label } = useParams();
+  const { id, type, label } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(id ? true : false);
+  const [selectedType, setSelectedType] = useState(type || '');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [technologies, setTechnologies] = useState([]);
+  const [trends, setTrends] = useState([]);
+  const types = [{type:'Technology'}, {type:'Trend'}]
+
+    // Determine form mode
+  const formMode = id ? FORM_MODES.EDIT 
+    : (type && label) ? FORM_MODES.ADD_TO_ITEM 
+    : FORM_MODES.CREATE_NEW;
+
+  // Set initial form state based on params
   const [form, setForm] = useState({
-    TechnologyLabel: label ? label : '',
+    Type: selectedType || '',
+    Label: label || '',
     Title: '',
     Url: '',
     Source: '',
     PublicationDate: ''
   });
 
+  // Capitalize type for display, fallback to 'Type' if not present
+  const capitalizedType = selectedType ? selectedType.charAt(0).toUpperCase() + selectedType.slice(1) : 'Must select a type';
+
   // Fetch technologies for dropdown
   useEffect(() => {
-    const fetchTechnologies = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get('${import.meta.env.VITE_API_URL}/api/admin/technologies', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setTechnologies(response.data.technologies);
-      } catch (error) {
-        console.error('Error fetching technologies:', error);
-        setError('Failed to load technologies. Please try again later.');
+    const fetchSelectedType = async () => {
+      if (selectedType){
+        try {
+          const token = localStorage.getItem('authToken');
+          const typeUrl = selectedType.toLowerCase() === 'technology' ? 'technologies' : 'trends';
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/${typeUrl}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (selectedType === 'Technology' || selectedType === 'technology') { 
+            console.log('Fetched technologies:', response.data.data);
+            setTechnologies(response.data.technologies);
+          } else {
+            console.log('Fetched trends:', response.data.data);
+            setTrends(response.data.data);
+          }
+        } catch (error) {
+          console.error('Error fetching technologies:', error);
+          setError('Failed to load technologies. Please try again later.');
+        }
       }
     };
 
-    fetchTechnologies();
-  }, []);
+    fetchSelectedType();
+  }, [selectedType, type]);
 
   // If editing, fetch the reference data
   useEffect(() => {
     if (!id) return;
-
     const fetchReference = async () => {
       try {
         const token = localStorage.getItem('authToken');
+        console.log('before calling API');
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/references/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        // Format the date for the input field
-        const data = { ...response.data };
-        if (data.PublicationDate) {
-          const date = new Date(data.PublicationDate);
-          data.PublicationDate = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-        }
-        
+        });       
+    
+        // Format the data and ensure no null values
+        const data = {
+          Label: response.data.data.Label || '',
+          Title: response.data.data.Title || '',
+          Url: response.data.data.Url || '',
+          Source: response.data.data.Source || '',
+          PublicationDate: response.data.data.PublicationDate ? 
+            new Date(response.data.data.PublicationDate).toISOString().split('T')[0] : ''
+        };
+        setSelectedType(response.data.data.Type || '');
+
         setForm(data);
         setLoading(false);
       } catch (error) {
@@ -70,9 +103,8 @@ const ReferenceForm = () => {
         }
       }
     };
-
     fetchReference();
-  }, [id, navigate]);
+  }, [label, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,6 +112,10 @@ const ReferenceForm = () => {
       ...form,
       [name]: value
     });
+      // Only update selectedType when Type field changes
+  if (name === 'Type') {
+    setSelectedType(value.toLowerCase());
+  }
   };
 
   const handleSubmit = async (e) => {
@@ -89,40 +125,59 @@ const ReferenceForm = () => {
     
     try {
       const token = localStorage.getItem('authToken');
-      
-      // Form validation
-      if (!form.TechnologyLabel || !form.Title || !form.Url) {
+      // Validation
+      if (!form.Title || !form.Url || 
+          (formMode === FORM_MODES.CREATE_NEW && (!form.Type || !form.Label))) {
         setError('Please fill all required fields');
         return;
       }
-      
       // URL validation
       try {
-        new URL(form.Url); // This will throw if the URL is invalid
+        new URL(form.Url);
       } catch (e) {
         setError('Please enter a valid URL (including http:// or https://)');
         return;
       }
-      
-      if (id) {
-        // Update existing reference
-        await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/references/${id}`, form, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setSuccess('Reference updated successfully!');
-      } else {
-        // Create new reference
-        await axios.post('${import.meta.env.VITE_API_URL}/api/admin/references', form, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setSuccess('Reference created successfully!');
-        setForm({
-          TechnologyLabel: '',
-          Title: '',
-          Url: '',
-          Source: '',
-          PublicationDate: ''
-        });
+      const requestData = {
+        ...form,
+        Type: formMode === FORM_MODES.CREATE_NEW ? form.Type : type,
+        Label: formMode === FORM_MODES.CREATE_NEW ? form.Label : label
+      };
+
+      switch (formMode) {
+        case FORM_MODES.EDIT:
+          await axios.put(
+            `${import.meta.env.VITE_API_URL}/api/admin/references/${id}`, 
+            requestData,
+            { headers: { Authorization: `Bearer ${token}` }}
+          );
+          setSuccess('Reference updated successfully!');
+          break;
+
+        case FORM_MODES.ADD_TO_ITEM:
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/admin/references/add/${type}/${label}`,
+            requestData,
+            { headers: { Authorization: `Bearer ${token}` }}
+          );
+          setSuccess('Reference added successfully!');
+          setForm({
+            ...form,
+            Title: '',
+            Url: '',
+            Source: '',
+            PublicationDate: ''
+          });
+          break;
+
+        case FORM_MODES.CREATE_NEW:
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/admin/references/add`,
+            requestData,
+            { headers: { Authorization: `Bearer ${token}` }}
+          );
+          setSuccess('Reference created successfully!');
+          break;
       }
     } catch (error) {
       console.error('Error saving reference:', error);
@@ -147,32 +202,85 @@ const ReferenceForm = () => {
   return (
     <div className="admin-form-container">
       <div className="admin-page-header">
-        <h2>{id ? 'Edit Reference' : 'Create Reference'}</h2>
-        <Link to="/admin/references" className="back-button">
-          <FontAwesomeIcon icon={faArrowLeft} /> Back to References
-        </Link>
+        <div className="header-left">
+          <button onClick={() => navigate(-1)} className="back-button">
+            <FontAwesomeIcon icon={faArrowLeft} /> Back
+          </button>
+        </div>
+        <h2>
+          {formMode === FORM_MODES.EDIT && 'Edit Reference'}
+          {formMode === FORM_MODES.ADD_TO_ITEM && `Add Reference to ${capitalizedType}`}
+          {formMode === FORM_MODES.CREATE_NEW && 'Create New Reference'}
+        </h2>
+        <div className="header-right">
+          <Link to="/admin/references" className="back-button">
+            <FontAwesomeIcon icon={faArrowLeft} /> Back to References
+          </Link>
+        </div>
       </div>
 
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
 
       <form onSubmit={handleSubmit} className="admin-form">
+      {/* Show Type selector only in CREATE_NEW mode */}
+      {formMode === FORM_MODES.CREATE_NEW && (
         <div className="form-group">
-          <label htmlFor="TechnologyLabel">Technology *</label>
+          <label htmlFor="Type">Type *</label>
           <select
-            id="TechnologyLabel"
-            name="TechnologyLabel"
-            value={form.TechnologyLabel}
+            id="Type"
+            name="Type"
+            value={form.Type}
             onChange={handleChange}
             required
           >
-            <option value="">Select a technology</option>
-            {technologies.length > 0 ? technologies.map(tech => (
-              <option key={tech.Label} value={tech.Label}>
-                {tech.Name}
+            <option value="">Select a type *</option>
+            {types.map(typeObj => (
+              <option key={typeObj.type} value={typeObj.type.toLowerCase()}>
+                {typeObj.type}
               </option>
-            )) : null}
+            ))}
           </select>
+        </div>
+      )}
+        
+        <div className="form-group">
+          <label htmlFor="Label">{capitalizedType} *</label>
+          {/* If label param is present, show a disabled input, else show a select */}
+          { label || id ? (
+            <input
+              type="text"
+              id="Label"
+              name="Label"
+              value={form.Label}
+              disabled
+              readOnly
+              className="disabled-input"
+            />
+          ) : (
+            <select
+              id="Label"
+              name="Label"
+              value={form.Label}
+              onChange={handleChange}
+              required
+            >
+              <option value="">{selectedType ? 'Select a '+selectedType : 'No type selected!'}</option>
+              {selectedType == 'trend' ? (
+                trends?.length > 0 && trends?.map(trend => (
+                  <option key={trend.Label} value={trend.Label}>
+                    {trend.Name}
+                  </option>
+                ))
+              ) : (
+                technologies?.length > 0 && technologies?.map(tech => (
+                  <option key={tech.Label} value={tech.Label}>
+                    {tech.Name}
+                  </option>
+                ))
+              )}
+            </select>
+          )}
         </div>
 
         <div className="form-group">

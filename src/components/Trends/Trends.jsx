@@ -24,6 +24,8 @@ const Trends = () => {
 
   // Function to handle viewing a technology
   const handleViewTrend = (trend) => {
+    console.log("trend");
+    console.log(trend);
     // Navigate to the tech details page
     navigate(`/trends/${trend.Label}`); // Changed from history.push to navigate
   };
@@ -52,19 +54,19 @@ const Trends = () => {
               </tr>
             </thead>
             <tbody>
-              {trends.map(tech => (
-                <tr key={tech.ID}>
-                  <td className="truncate-text">{tech.Name}</td>
-                  <td className="truncate-text">{tech.Abstract}</td>
-                  <td className="truncate-text">{tech.Stage}</td>
-                  <td className="truncate-text">{tech.DefinitionAndScope}</td>
-                  <td className="truncate-text">{tech.RelevanceAndImpact}</td>
-                  <td className="truncate-text">{tech.TechnologySegment}</td>
-                  <td className="truncate-text">{tech.TechnologyMaturity}</td>
-                  <td className="truncate-text">{tech.RecommendedAction}</td>
-                  <td className="truncate-text">{tech.ContentSource}</td>
-                  <td className="truncate-text">{tech.LastReviewDate}</td>
-                  <td className="truncate-text">{tech.Timestamp}</td>
+              {trends.map(trend => (
+                <tr key={trend.ID}>
+                  <td className="truncate-text">{trend.Name}</td>
+                  <td className="truncate-text">{trend.Abstract}</td>
+                  <td className="truncate-text">{trend.Stage}</td>
+                  <td className="truncate-text">{trend.DefinitionAndScope}</td>
+                  <td className="truncate-text">{trend.RelevanceAndImpact}</td>
+                  <td className="truncate-text">{trend.trendSegment}</td>
+                  <td className="truncate-text">{trend.trendMaturity}</td>
+                  <td className="truncate-text">{trend.RecommendedAction}</td>
+                  <td className="truncate-text">{trend.ContentSource}</td>
+                  <td className="truncate-text">{trend.LastReviewDate}</td>
+                  <td className="truncate-text">{trend.Timestamp}</td>
                   <td className="truncate-text action-cell">
                     <FontAwesomeIcon 
                       icon={faEye} 

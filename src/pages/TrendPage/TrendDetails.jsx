@@ -13,7 +13,11 @@ const TrendDetails = ({ trend }) => {
   const currentUser = useAuth();
 
   const handleAddReference = () => {
-    navigate(`/admin/references/add/${trend.Label}`);
+    navigate(`/admin/references/add/trend/${trend.Label}`, {
+      state: {
+        createType: "withTypeAndLabel"
+      }
+    });
   };
   
   useEffect(() => {

@@ -13,7 +13,11 @@ const TechDetails = ({ technology }) => {
   const currentUser = useAuth();
 
   const handleAddReference = () => {
-    navigate(`/admin/references/add/${technology.Label}`); // Adjust the route as needed
+    navigate(`/admin/references/add/technology/${technology.Label}`, {
+      state: {
+        createType: "withTypeAndLabel"
+      }
+    });
   };
 
   useEffect(() => {
