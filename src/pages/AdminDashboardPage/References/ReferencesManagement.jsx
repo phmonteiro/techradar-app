@@ -153,7 +153,7 @@ const ReferencesManagement = () => {
                   references.map(reference => (
                     <tr key={reference.Id}>
                       <td data-tooltip={reference.Id}>{reference.Id}</td>
-                      <td data-tooltip={reference.TechnologyLabel}>{reference.TechnologyLabel}</td>
+                      <td data-tooltip={reference.Label}>{reference.Label}</td>
                       <td data-tooltip={reference.Title}>{reference.Title}</td>
                       <td data-tooltip={reference.Url}>{reference.Url}</td>
                       <td data-tooltip={reference.Source}>{reference.Source}</td>

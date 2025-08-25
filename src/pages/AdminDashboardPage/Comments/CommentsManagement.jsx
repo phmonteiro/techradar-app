@@ -99,19 +99,37 @@ const CommentsManagement = () => {
     try {
       const token = localStorage.getItem('authToken');
       
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/admin/comments/${id}/approve`,
-        { approved: !currentStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
+      if(currentStatus == "false") {
+        await axios.put(
+          `${import.meta.env.VITE_API_URL}/api/admin/comments/${id}/approve`,
+          {}, // Empty body as second parameter
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        }
-      );
+        );
+      } else {
+        await axios.put(
+          `${import.meta.env.VITE_API_URL}/api/admin/comments/${id}/reject`,
+          { reason: 'Rejected by admin' }, // Optional rejection reason
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+      }
       
       fetchComments();
     } catch (error) {
       console.error('Error updating comment approval status:', error);
+      
+      // Handle unauthorized error
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('authToken');
+        navigate('/login');
+      }
     }
   };
   
@@ -180,8 +198,8 @@ const CommentsManagement = () => {
                           : comment.Text}
                       </td>
                       <td data-tooltip={new Date(comment.CommentDate).toLocaleDateString()}>{new Date(comment.CommentDate).toLocaleDateString()}</td>
-                      <td data-tooltip={comment.IsApproved ? 'Yes' : 'No'}>
-                        {comment.IsApproved 
+                      <td data-tooltip={comment.IsApproved == 'true' ? 'Yes' : 'No'}>
+                        {comment.IsApproved == 'true'
                           ? <span className="status approved">Yes</span>
                           : <span className="status pending">No</span>}
                       </td>
@@ -246,7 +264,7 @@ const CommentsManagement = () => {
       
       {showDeleteModal && (
         <DeleteConfirmation
-          technology={commentToDelete}
+          data={commentToDelete}
           onCancel={() => setShowDeleteModal(false)}
           onConfirm={confirmDelete}
         />
