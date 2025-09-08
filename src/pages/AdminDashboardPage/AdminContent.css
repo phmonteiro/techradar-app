@@ -1,0 +1,72 @@
+/* Admin Content Area Styles */
+@import './AdminVariables.css';
+
+/* Main Content Area */
+.admin-content {
+  flex: 1;
+  padding: var(--space-xl);
+  overflow-y: auto;
+  background: var(--color-background-secondary);
+  margin-left: 280px;
+}
+
+/* Page Header */
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding: var(--space-xl);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-light);
+}
+
+.admin-page-header h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.admin-page-header h2::before {
+  content: "📋";
+  font-size: 1.2em;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.home-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+  text-decoration: none;
+}
+
+.home-button::before {
+  content: "🏠";
+  font-size: 1.1em;
+}

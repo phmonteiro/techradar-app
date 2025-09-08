@@ -3,7 +3,8 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import '../AdminStyles.css';
+import '../CommentsManagement.css';
+import '../AdminTable.css';
 
 const CommentForm = () => {
   const { id } = useParams();

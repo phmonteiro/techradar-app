@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faComment, faBook, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../../contexts/AuthContext';
 import './AdminDashboard.css';
-import AdminSidebar from './AdminSidebar'; // Import the sidebar component
+import './AdminTable.css';
+import AdminSidebar from '../AdminSidebar'; // Import the sidebar component
 
 const AdminDashboard = () => {
   const { currentUser } = useAuth();
   const [stats, setStats] = useState({
     technologies: { count: 0, loading: true, error: false },
     comments: { count: 0, loading: true, error: false },
-    references: { count: 0, loading: true, error: false },
-    trends: { count: 0, loading: true, error: false }
+    references: { count: 0, loading: true, error: false }
   });
 
   // Fetch technology count
@@ -76,25 +76,6 @@ const AdminDashboard = () => {
           references: { count: 0, loading: false, error: true }
         }));
       });
-
-    // Fetch trends count
-    axios.get('${import.meta.env.VITE_API_URL}/api/trends/count', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        console.log(response.data);	
-        setStats(prev => ({
-          ...prev,
-          trends: { count: response.data.count, loading: false, error: false } 
-        }));
-      })
-      .catch(error => {
-        console.error('Error fetching trends count:', error);
-        setStats(prev => ({
-          ...prev,  
-          trends: { count: 0, loading: false, error: true }
-        }));
-      });
   }, [currentUser]);
 
   const renderStatValue = (stat) => {
@@ -122,25 +103,12 @@ const AdminDashboard = () => {
               <div className="stat-value">
                 {renderStatValue(stats.technologies)}
               </div>
-              <Link to="/admin/technologies/create" className="stat-link">Add New Technology</Link>
+              <Link to="/admin/technologies/create" className="stat-link">Add gfNew Technology</Link>
             <span> </span>
               <Link to="/admin/technologies" className="stat-link">Manage Technologies</Link>
             </div>
           </div>
           
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faLayerGroup} />
-            </div>
-            <div className="stat-content">
-              <h3>Trends</h3>
-              <div className="stat-value">
-                {renderStatValue(stats.trends)}
-              </div>
-              <Link to="/admin/trends" className="stat-link">Manage Trends</Link>
-            </div>
-          </div>
-
           <div className="stat-card">
             <div className="stat-icon">
               <FontAwesomeIcon icon={faComment} />

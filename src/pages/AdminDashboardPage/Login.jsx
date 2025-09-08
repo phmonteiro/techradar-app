@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './AdminStyles.css';
+import './AdminForms.css';
 import AuthContext from '../../contexts/AuthContext';
 
 const Login = () => {

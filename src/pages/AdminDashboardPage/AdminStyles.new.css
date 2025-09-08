@@ -1,0 +1,94 @@
+/* Modern Admin Styles - Consolidated Import File */
+
+/* Import all admin component styles */
+@import './AdminVariables.css';
+@import './AdminLayout.css';
+@import './AdminSidebar.css';
+@import './AdminContent.css';
+@import './AdminButtons.css';
+@import './AdminTable.css';
+@import './AdminUI.css';
+@import './AdminModal.css';
+@import './AdminForms.css';
+@import './AdminDashboard.css';
+@import './AdminComments.css';
+@import './AdminReferences.css';
+
+/* Global admin styles that don't belong to specific components */
+body.admin-theme {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background-secondary);
+}
+
+/* Admin-specific utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-muted {
+  color: var(--admin-gray);
+}
+
+.hidden {
+  display: none;
+}
+
+.warning-text {
+  color: var(--admin-danger);
+  font-weight: 500;
+}
+
+/* Quick Actions Section */
+.quick-actions {
+  margin-top: var(--space-xl);
+  padding: var(--space-xl);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.quick-actions h3 {
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.action-button.secondary {
+  background: linear-gradient(135deg, var(--color-text-muted) 0%, var(--color-text-secondary) 100%);
+  color: white;
+}
+
+.action-button:not(.secondary) {
+  background: linear-gradient(135deg, var(--color-success) 0%, #16a085 100%);
+  color: white;
+}

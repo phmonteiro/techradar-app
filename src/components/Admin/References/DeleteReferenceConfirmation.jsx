@@ -1,5 +1,5 @@
 import React from 'react';
-import '../AdminStyles.css';
+import '../DeleteConfirmation.css';
 
 const DeleteReferenceConfirmation = ({ reference, onCancel, onConfirm }) => {
   if (!reference) return null;

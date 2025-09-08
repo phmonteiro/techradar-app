@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
-import DeleteConfirmation from '../DeleteConfirmation.jsx';
-import '../AdminStyles.css';
+import DeleteConfirmation from '../To Delete/DeleteConfirmation.jsx';
+import '../AdminTable.css';
 
 const TechnologiesManagement = () => {
   const [technologies, setTechnologies] = useState([]);

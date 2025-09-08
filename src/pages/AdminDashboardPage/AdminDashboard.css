@@ -1,0 +1,61 @@
+/* Admin Dashboard Specific Styles */
+@import './AdminVariables.css';
+
+/* Dashboard Layout */
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-left: 250px; /* Adjust based on your sidebar width */
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center; /* Vertically align items */
+  gap: 1rem; /* Add spacing between the icon and content */
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: #555;
+  flex-shrink: 0;
+  margin-right: 15px;
+}
+
+.stat-content {
+  flex: 1; /* Allow the content to take up remaining space */
+  flex-grow: 1;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--admin-dark);
+  margin: 10px 0;
+}
+
+.stat-number {
+  display: inline-block;
+}
+
+.stat-error {
+  color: var(--admin-danger);
+  font-size: 16px;
+}
+
+.stat-link {
+  display: inline-block;
+  margin-right: 10px;
+  color: #007bff;
+  text-decoration: none;
+}

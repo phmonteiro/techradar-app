@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import '../AdminStyles.css';
+import '../AdminTable.css';
 import './CreateTechnology.css'; // Add specific styles
 
 const CreateTechnology = () => {

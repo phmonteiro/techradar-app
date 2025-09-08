@@ -33,8 +33,8 @@ const Technologies = () => {
       <Navbar />
       <div className="container-fluid p-0 m-0">
         <h1>Technologies</h1>
-        <div>
-          <table className="table table-striped">
+        <div className="table-responsive">
+          <table className="table table-striped responsive-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -54,22 +54,23 @@ const Technologies = () => {
             <tbody>
               {technologies.map(tech => (
                 <tr key={tech.ID}>
-                  <td className="truncate-text">{tech.Name}</td>
-                  <td className="truncate-text">{tech.Abstract}</td>
-                  <td className="truncate-text">{tech.Stage}</td>
-                  <td className="truncate-text">{tech.DefinitionAndScope}</td>
-                  <td className="truncate-text">{tech.RelevanceAndImpact}</td>
-                  <td className="truncate-text">{tech.TechnologySegment}</td>
-                  <td className="truncate-text">{tech.TechnologyMaturity}</td>
-                  <td className="truncate-text">{tech.RecommendedAction}</td>
-                  <td className="truncate-text">{tech.ContentSource}</td>
-                  <td className="truncate-text">{tech.LastReviewDate}</td>
-                  <td className="truncate-text">{tech.Timestamp}</td>
-                  <td className="truncate-text action-cell">
+                  <td className="truncate-text" data-title={tech.Name}>{tech.Name}</td>
+                  <td className="truncate-text" data-title={tech.Abstract}>{tech.Abstract}</td>
+                  <td className="truncate-text" data-title={tech.Stage}>{tech.Stage}</td>
+                  <td className="truncate-text" data-title={tech.DefinitionAndScope}>{tech.DefinitionAndScope}</td>
+                  <td className="truncate-text" data-title={tech.RelevanceAndImpact}>{tech.RelevanceAndImpact}</td>
+                  <td className="truncate-text" data-title={tech.TechnologySegment}>{tech.TechnologySegment}</td>
+                  <td className="truncate-text" data-title={tech.TechnologyMaturity}>{tech.TechnologyMaturity}</td>
+                  <td className="truncate-text" data-title={tech.RecommendedAction}>{tech.RecommendedAction}</td>
+                  <td className="truncate-text" data-title={tech.ContentSource}>{tech.ContentSource}</td>
+                  <td className="truncate-text" data-title={tech.LastReviewDate}>{tech.LastReviewDate}</td>
+                  <td className="truncate-text" data-title={tech.Timestamp}>{tech.Timestamp}</td>
+                  <td className="action-cell">
                     <FontAwesomeIcon 
                       icon={faEye} 
                       onClick={() => handleViewTechnology(tech)}
                       className="action-icon"
+                      title="View Technology Details"
                     />
                   </td>
                 </tr>

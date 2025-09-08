@@ -4,7 +4,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import DeleteReferenceConfirmation from './DeleteReferenceConfirmation.jsx';
-import '../AdminStyles.css';
+import '../ReferencesManagement.css';
+import '../AdminTable.css';
 
 const ReferencesManagement = () => {
   const [references, setReferences] = useState([]);

@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSearch, faHome, faCheck, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
-import DeleteConfirmation from '../DeleteConfirmation.jsx';
-import '../AdminStyles.css';
+import DeleteConfirmation from '../To Delete/DeleteConfirmation.jsx';
+import '../CommentsManagement.css';
+import '../AdminTable.css';
 
 const CommentsManagement = () => {
   const [comments, setComments] = useState([]);

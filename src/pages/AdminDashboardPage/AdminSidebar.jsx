@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './AdminStyles.css';
+import './AdminSidebar.css';
 
 const AdminSidebar = ({ username, onLogout }) => {
   return (

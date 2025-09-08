@@ -1,0 +1,71 @@
+/* Admin Buttons Styles */
+@import './AdminVariables.css';
+
+/* Modern Admin Buttons */
+.create-button {
+  background: linear-gradient(135deg, var(--color-success) 0%, #16a085 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.create-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+  text-decoration: none;
+}
+
+.create-button::before {
+  content: "➕";
+  font-size: 1.1em;
+}
+
+.edit-button, .delete-button {
+  background: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 var(--space-xs);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.edit-button {
+  color: var(--color-primary);
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.edit-button:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.delete-button {
+  color: var(--color-error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.delete-button:hover {
+  background: var(--color-error);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import './AdminStyles.css';
+import './AdminModal.css';
 
 const DeleteConfirmation = ({ data, onCancel, onConfirm }) => {
   if (!data) return null;

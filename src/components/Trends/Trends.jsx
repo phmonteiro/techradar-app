@@ -35,8 +35,8 @@ const Trends = () => {
       <Navbar />
       <div className="container-fluid p-0 m-0">
         <h1>Trends</h1>
-        <div>
-          <table className="table table-striped">
+        <div className="table-responsive">
+          <table className="table table-striped responsive-table">
             <thead>
               <tr>
                 <th>Name</th>
@@ -56,22 +56,23 @@ const Trends = () => {
             <tbody>
               {trends.map(trend => (
                 <tr key={trend.ID}>
-                  <td className="truncate-text">{trend.Name}</td>
-                  <td className="truncate-text">{trend.Abstract}</td>
-                  <td className="truncate-text">{trend.Stage}</td>
-                  <td className="truncate-text">{trend.DefinitionAndScope}</td>
-                  <td className="truncate-text">{trend.RelevanceAndImpact}</td>
-                  <td className="truncate-text">{trend.trendSegment}</td>
-                  <td className="truncate-text">{trend.trendMaturity}</td>
-                  <td className="truncate-text">{trend.RecommendedAction}</td>
-                  <td className="truncate-text">{trend.ContentSource}</td>
-                  <td className="truncate-text">{trend.LastReviewDate}</td>
-                  <td className="truncate-text">{trend.Timestamp}</td>
-                  <td className="truncate-text action-cell">
+                  <td className="truncate-text" data-title={trend.Name}>{trend.Name}</td>
+                  <td className="truncate-text" data-title={trend.Abstract}>{trend.Abstract}</td>
+                  <td className="truncate-text" data-title={trend.Stage}>{trend.Stage}</td>
+                  <td className="truncate-text" data-title={trend.DefinitionAndScope}>{trend.DefinitionAndScope}</td>
+                  <td className="truncate-text" data-title={trend.RelevanceAndImpact}>{trend.RelevanceAndImpact}</td>
+                  <td className="truncate-text" data-title={trend.trendSegment}>{trend.trendSegment}</td>
+                  <td className="truncate-text" data-title={trend.trendMaturity}>{trend.trendMaturity}</td>
+                  <td className="truncate-text" data-title={trend.RecommendedAction}>{trend.RecommendedAction}</td>
+                  <td className="truncate-text" data-title={trend.ContentSource}>{trend.ContentSource}</td>
+                  <td className="truncate-text" data-title={trend.LastReviewDate}>{trend.LastReviewDate}</td>
+                  <td className="truncate-text" data-title={trend.Timestamp}>{trend.Timestamp}</td>
+                  <td className="action-cell">
                     <FontAwesomeIcon 
                       icon={faEye} 
                       onClick={() => handleViewTrend(trend)}
                       className="action-icon"
+                      title="View Trend Details"
                     />
                   </td>
                 </tr>

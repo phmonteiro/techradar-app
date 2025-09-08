@@ -1,0 +1,311 @@
+/* Admin Table and Search Styles */
+@import './AdminVariables.css';
+
+/* Search Container */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-group {
+  display: flex;
+  max-width: 500px;
+}
+
+.search-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--admin-border);
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-size: 14px;
+}
+
+.search-group button {
+  background-color: var(--admin-secondary);
+  color: white;
+  border: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-group button:hover {
+  background-color: #2980b9;
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  width: 100%;
+  min-width: 800px; /* Minimum table width for readability */
+  max-width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  background: white;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 800px; /* Ensures table maintains minimum readable width */
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: auto; /* Allow columns to adjust based on content */
+}
+
+.admin-table th {
+  background-color: var(--admin-light);
+  color: var(--admin-dark);
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 2px solid var(--admin-border);
+  font-weight: 600;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--admin-border);
+  vertical-align: middle;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-table tr:hover {
+  background-color: var(--admin-hover);
+}
+
+.actions-cell {
+  white-space: nowrap;
+  width: 120px;
+  min-width: 120px;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--admin-gray);
+  padding: 30px 0 !important;
+  font-style: italic;
+}
+
+/* Responsive column widths */
+.admin-table th:nth-child(1), /* ID */
+.admin-table td:nth-child(1) {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.admin-table th:nth-child(2), /* Name */
+.admin-table td:nth-child(2) {
+  width: 25%;
+  min-width: 150px;
+}
+
+.admin-table th:nth-child(3), /* Label */
+.admin-table td:nth-child(3) {
+  width: 20%;
+  min-width: 120px;
+}
+
+.admin-table th:nth-child(4), /* Stage */
+.admin-table td:nth-child(4) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.admin-table th:nth-child(5), /* Technology Segment */
+.admin-table td:nth-child(5) {
+  width: 20%;
+  min-width: 130px;
+}
+
+.admin-table th:nth-child(6), /* Last Review Date */
+.admin-table td:nth-child(6) {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.admin-table th:nth-child(7), /* Actions */
+.admin-table td:nth-child(7) {
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+/* Equal width columns */
+.admin-table th,
+.admin-table td {
+  width: auto;
+  text-align: left;
+  max-width: 200px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Tooltip balloon */
+.admin-table th:hover,
+.admin-table td:hover {
+  position: relative;
+}
+
+.admin-table th:hover::after,
+.admin-table td:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.4;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeInTooltip 0.3s ease-in-out forwards;
+}
+
+/* Alternative tooltip for data-tooltip attribute */
+.admin-table th[data-tooltip]:hover::after,
+.admin-table td[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+}
+
+.admin-table th:hover::after,
+.admin-table td:hover::after {
+  content: attr(data-title);
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.4;
+  pointer-events: none;
+  opacity: 1;
+}
+
+/* Container for admin list pages */
+.admin-list-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--space-lg);
+  box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-table th:nth-child(5), /* Technology Segment */
+  .admin-table td:nth-child(5) {
+    display: none;
+  }
+  
+  .admin-table th:nth-child(2), /* Name */
+  .admin-table td:nth-child(2) {
+    width: 30%;
+  }
+  
+  .admin-table th:nth-child(3), /* Label */
+  .admin-table td:nth-child(3) {
+    width: 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    min-width: 600px;
+  }
+  
+  .admin-table {
+    min-width: 600px;
+  }
+  
+  .admin-table th:nth-child(1), /* ID */
+  .admin-table td:nth-child(1) {
+    display: none;
+  }
+  
+  .admin-table th:nth-child(4), /* Stage */
+  .admin-table td:nth-child(4) {
+    display: none;
+  }
+  
+  .admin-table th:nth-child(2), /* Name */
+  .admin-table td:nth-child(2) {
+    width: 40%;
+    min-width: 150px;
+  }
+  
+  .admin-table th:nth-child(3), /* Label */
+  .admin-table td:nth-child(3) {
+    width: 30%;
+    min-width: 120px;
+  }
+  
+  .admin-table th:nth-child(6), /* Date */
+  .admin-table td:nth-child(6) {
+    width: 20%;
+    min-width: 100px;
+  }
+  
+  .admin-list-container {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .table-responsive {
+    min-width: 400px;
+  }
+  
+  .admin-table {
+    min-width: 400px;
+  }
+  
+  .admin-table th:nth-child(6), /* Date */
+  .admin-table td:nth-child(6) {
+    display: none;
+  }
+  
+  .admin-table th:nth-child(2), /* Name */
+  .admin-table td:nth-child(2) {
+    width: 60%;
+  }
+  
+  .admin-table th:nth-child(3), /* Label */
+  .admin-table td:nth-child(3) {
+    width: 30%;
+  }
+}
+
+/* Tooltip animations */
+@keyframes fadeInTooltip {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
