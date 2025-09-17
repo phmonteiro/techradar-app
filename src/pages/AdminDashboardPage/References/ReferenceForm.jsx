@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const FORM_MODES = {
   EDIT: 'edit',        // When id is present

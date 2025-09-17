@@ -1,5 +1,5 @@
 /* Admin Layout Styles */
-@import './AdminVariables.css';
+@import './styles/admin-variables.css';
 
 /* Layout Containers */
 .admin-layout {

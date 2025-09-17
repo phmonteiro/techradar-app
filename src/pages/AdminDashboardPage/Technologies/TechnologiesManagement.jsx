@@ -4,13 +4,13 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import DeleteConfirmation from '../DeleteConfirmation.jsx';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const TechnologiesManagement = () => {
   const [technologies, setTechnologies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -44,13 +44,30 @@ const TechnologiesManagement = () => {
     }
   };
   
+  // Filter technologies based on filter input
+  const filteredTechnologies = technologies.filter(tech => {
+    if (!filter) return true;
+    
+    const searchTerm = filter.toLowerCase();
+    const formattedDate = formatDate(tech.LastReviewDate);
+    
+    return (
+      tech.Id?.toString().toLowerCase().includes(searchTerm) ||
+      tech.Name?.toLowerCase().includes(searchTerm) ||
+      tech.Label?.toLowerCase().includes(searchTerm) ||
+      tech.Stage?.toLowerCase().includes(searchTerm) ||
+      tech.TechnologySegment?.toLowerCase().includes(searchTerm) ||
+      formattedDate.toLowerCase().includes(searchTerm)
+    );
+  });
+  
   const fetchTechnologies = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/admin/technologies?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/technologies?page=${pagination.page}&limit=${pagination.limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -80,12 +97,6 @@ const TechnologiesManagement = () => {
   useEffect(() => {
     fetchTechnologies();
   }, [pagination.page, pagination.limit]);
-  
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: 1 });
-    fetchTechnologies();
-  };
   
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > pagination.totalPages) return;
@@ -132,19 +143,17 @@ const TechnologiesManagement = () => {
       </div>
       
       <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <div className="search-group">
-            <input
-              type="text"
-              placeholder="Search technologies..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button type="submit">
-              <FontAwesomeIcon icon={faSearch} /> Search
-            </button>
-          </div>
-        </form>
+        <div className="search-group">
+          <input
+            type="text"
+            placeholder="Filter all fields..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <button type="button">
+            <FontAwesomeIcon icon={faSearch} /> Search
+          </button>
+        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
@@ -167,8 +176,8 @@ const TechnologiesManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                {technologies.length > 0 ? (
-                  technologies.map(tech => (
+                {filteredTechnologies.length > 0 ? (
+                  filteredTechnologies.map(tech => (
                     <tr key={tech.Label}>
                       <td data-tooltip={tech.Id}>{tech.Id}</td>
                       <td data-tooltip={tech.Name}>{tech.Name}</td>
@@ -196,7 +205,9 @@ const TechnologiesManagement = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-data">No technologies found</td>
+                    <td colSpan="7" className="no-data">
+                      {filter ? 'No technologies match the filter criteria' : 'No technologies found'}
+                    </td>
                   </tr>
                 )}
               </tbody>

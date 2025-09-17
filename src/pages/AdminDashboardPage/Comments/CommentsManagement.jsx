@@ -4,13 +4,13 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faSearch, faHome, faCheck, faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import DeleteConfirmation from '../DeleteConfirmation.jsx';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const CommentsManagement = () => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -28,7 +28,7 @@ const CommentsManagement = () => {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/admin/comments?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/comments?page=${pagination.page}&limit=${pagination.limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -58,12 +58,6 @@ const CommentsManagement = () => {
   useEffect(() => {
     fetchComments();
   }, [pagination.page, pagination.limit]);
-  
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: 1 });
-    fetchComments();
-  };
   
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > pagination.totalPages) return;
@@ -132,6 +126,34 @@ const CommentsManagement = () => {
       }
     }
   };
+
+  // Helper function to format date in UK locale
+  const formatDatePT = (dateString) => {
+    try {
+      return new Date(dateString).toLocaleDateString('pt-PT');
+    } catch (error) {
+      return 'Invalid Date';
+    }
+  };
+
+  // Filter comments based on filter input
+  const filteredComments = comments.filter(comment => {
+    if (!filter) return true;
+    
+    const searchTerm = filter.toLowerCase();
+    const formattedDate = formatDatePT(comment.CreatedAt);
+    
+    return (
+      comment.Id?.toString().toLowerCase().includes(searchTerm) ||
+      comment.Type?.toLowerCase().includes(searchTerm) ||
+      comment.Label?.toLowerCase().includes(searchTerm) ||
+      comment.Text?.toLowerCase().includes(searchTerm) ||
+      comment.Author?.toLowerCase().includes(searchTerm) ||
+      formattedDate.toLowerCase().includes(searchTerm) ||
+      (comment.IsApproved == 'true' ? 'yes' : 'no').includes(searchTerm) ||
+      (comment.IsApproved == 'true' ? 'approved' : 'pending').includes(searchTerm)
+    );
+  });
   
   return (
     <div className="admin-list-container">
@@ -148,19 +170,17 @@ const CommentsManagement = () => {
       </div>
       
       <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <div className="search-group">
-            <input
-              type="text"
-              placeholder="Search comments..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button type="submit">
-              <FontAwesomeIcon icon={faSearch} /> Search
-            </button>
-          </div>
-        </form>
+        <div className="search-group">
+          <input
+            type="text"
+            placeholder="Filter all fields..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <button type="button">
+            <FontAwesomeIcon icon={faSearch} /> Search
+          </button>
+        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
@@ -177,39 +197,51 @@ const CommentsManagement = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Technology</th>
+                  <th style={{width: 'auto', whiteSpace: 'nowrap'}}>Type</th>
+                  <th>Label</th>
+                  <th>Text</th>
                   <th>Author</th>
-                  <th>Comment</th>
                   <th>Date</th>
                   <th>Approved</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {comments.length > 0 ? (
-                  comments.map(comment => (
+                {filteredComments.length > 0 ? (
+                  filteredComments.map(comment => {
+                    console.log(comment.CreatedAt);
+                    const formattedDate = formatDatePT(comment.CreatedAt);
+                    return (
                     <tr key={comment.Id}>
                       <td data-tooltip={comment.Id}>{comment.Id}</td>
-                      <td data-tooltip={comment.TechnologyName}>{comment.TechnologyName}</td>
-                      <td data-tooltip={comment.Author}>{comment.Author}</td>
+                      <td data-tooltip={comment.Type || 'Technology'} style={{width: 'auto', whiteSpace: 'nowrap'}}>
+                        <span className={`type-badge ${(comment.Type || 'technology').toLowerCase()}`}>
+                          {(comment.Type || 'Technology').charAt(0).toUpperCase() + (comment.Type || 'Technology').slice(1).toLowerCase()}
+                        </span>
+                      </td>
+                      <td data-tooltip={comment.Label}>
+                        {comment.Label}
+                      </td>
                       <td data-tooltip={comment.Text} className="comment-text">
                         {comment.Text.length > 100 
                           ? `${comment.Text.substring(0, 100)}...` 
                           : comment.Text}
                       </td>
-                      <td data-tooltip={new Date(comment.CommentDate).toLocaleDateString()}>{new Date(comment.CommentDate).toLocaleDateString()}</td>
+                      <td data-tooltip={comment.Author}>{comment.Author}</td>
+                      <td data-tooltip={formattedDate}>{formattedDate}</td>
                       <td data-tooltip={comment.IsApproved == 'true' ? 'Yes' : 'No'}>
                         {comment.IsApproved == 'true'
                           ? <span className="status approved">Yes</span>
                           : <span className="status pending">No</span>}
                       </td>
-                      <td className="actions-cell">
+                      <td className="actions-cell" style={{minWidth: '120px'}}>
                         <button
                           onClick={() => handleApproveComment(comment.Id, comment.IsApproved)}
-                          className={comment.IsApproved ? "reject-button" : "approve-button"}
-                          title={comment.IsApproved ? "Reject Comment" : "Approve Comment"}
+                          className={comment.IsApproved == 'true' ? "reject-button" : "approve-button"}
+                          title={comment.IsApproved == 'true' ? "Reject Comment" : "Approve Comment"}
+                          style={{marginRight: '8px'}}
                         >
-                          <FontAwesomeIcon icon={comment.IsApproved ? faTimes : faCheck} />
+                          <FontAwesomeIcon icon={comment.IsApproved == 'true' ? faTimes : faCheck} />
                         </button>
                         <button
                           onClick={() => handleDelete(comment)}
@@ -220,10 +252,13 @@ const CommentsManagement = () => {
                         </button>
                       </td>
                     </tr>
-                  ))
+                    );
+                  })
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-data">No comments found</td>
+                    <td colSpan="8" className="no-data">
+                      {filter ? 'No comments match the filter criteria' : 'No comments found'}
+                    </td>
                   </tr>
                 )}
               </tbody>

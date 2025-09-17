@@ -1,0 +1,14 @@
+/* Admin Design System Variables */
+:root {
+  --admin-primary: var(--color-primary);
+  --admin-secondary: var(--color-secondary);
+  --admin-danger: var(--color-error);
+  --admin-success: var(--color-success);
+  --admin-warning: var(--color-warning);
+  --admin-light: var(--color-background-secondary);
+  --admin-dark: var(--color-text-primary);
+  --admin-gray: var(--color-text-muted);
+  --admin-border: var(--color-border);
+  --admin-hover: var(--color-background-tertiary);
+  --admin-shadow: var(--shadow-md);
+}

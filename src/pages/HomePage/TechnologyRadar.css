@@ -14,10 +14,7 @@ h3 {
   gap: var(--space-sm);
 }
 
-h3::before {
-  content: "🎯";
-  font-size: 1.2em;
-}
+.technology-radar h3::before { content: "🎯"; }
 
 li {
   margin: var(--space-lg) var(--space-2xl) 0 0;

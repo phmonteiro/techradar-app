@@ -4,13 +4,13 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import DeleteConfirmation from '../DeleteConfirmation.jsx';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const TrendsManagement = () => {
   const [trends, setTrends] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -44,13 +44,30 @@ const TrendsManagement = () => {
     }
   };
   
+  // Filter trends based on filter input
+  const filteredTrends = trends.filter(trend => {
+    if (!filter) return true;
+    
+    const searchTerm = filter.toLowerCase();
+    const formattedDate = formatDate(trend.LastReviewDate);
+    
+    return (
+      trend.Id?.toString().toLowerCase().includes(searchTerm) ||
+      trend.Name?.toLowerCase().includes(searchTerm) ||
+      trend.Label?.toLowerCase().includes(searchTerm) ||
+      trend.Stage?.toLowerCase().includes(searchTerm) ||
+      trend.TechnologySegment?.toLowerCase().includes(searchTerm) ||
+      formattedDate.toLowerCase().includes(searchTerm)
+    );
+  });
+  
   const fetchTrends = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/admin/trends?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/trends?page=${pagination.page}&limit=${pagination.limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -80,12 +97,6 @@ const TrendsManagement = () => {
   useEffect(() => {
     fetchTrends();
   }, [pagination.page, pagination.limit]);
-  
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: 1 });
-    fetchTrends();
-  };
   
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > pagination.totalPages) return;
@@ -132,19 +143,17 @@ const TrendsManagement = () => {
       </div>
       
       <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <div className="search-group">
-            <input
-              type="text"
-              placeholder="Search trends..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button type="submit">
-              <FontAwesomeIcon icon={faSearch} /> Search
-            </button>
-          </div>
-        </form>
+        <div className="search-group">
+          <input
+            type="text"
+            placeholder="Filter all fields..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <button type="button">
+            <FontAwesomeIcon icon={faSearch} /> Search
+          </button>
+        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
@@ -167,8 +176,8 @@ const TrendsManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                {trends.length > 0 ? (
-                  trends.map(trend => (
+                {filteredTrends.length > 0 ? (
+                  filteredTrends.map(trend => (
                     <tr key={trend.Label}>
                       <td data-tooltip={trend.Id}>{trend.Id}</td>
                       <td data-tooltip={trend.Name}>{trend.Name}</td>
@@ -196,7 +205,9 @@ const TrendsManagement = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-data">No trends found</td>
+                    <td colSpan="7" className="no-data">
+                      {filter ? 'No trends match the filter criteria' : 'No trends found'}
+                    </td>
                   </tr>
                 )}
               </tbody>

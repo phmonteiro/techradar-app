@@ -338,16 +338,22 @@
   background-color: #2980b9;
 }
 
-/* Table Styles */
-.table-responsive {
-  overflow-x: auto;
+/* Table Styles - Admin specific */
+.admin-list-container .table-responsive {
+  overflow-x: hidden !important;
+  overflow-y: visible;
   margin-bottom: 20px;
+  width: 100%;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: fixed !important;
+  margin-left: 0;
 }
 
 .admin-table th {
@@ -383,11 +389,22 @@
 /* Equal width columns */
 .admin-table th,
 .admin-table td {
-  width: 14.28%; /* 100% / 7 columns */
+  width: 15.33%; /* Redistributed width for remaining 6 columns */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
+}
+
+/* ID column specific styling - smaller width and allow wrapping */
+.admin-table th:first-child,
+.admin-table td:first-child {
+  width: 8% !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  min-width: 60px;
+  max-width: 80px;
 }
 
 /* Tooltip balloon */
@@ -801,4 +818,20 @@
 
 .reference-link:hover {
   text-decoration: underline;
+}
+
+/* Admin List Container */
+.admin-list-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--space-lg);
+  padding-left: var(--space-lg);
+  box-sizing: border-box;
+}
+
+.admin-list-container .table-responsive {
+  margin-left: 0;
+  padding-left: 0;
+  overflow-x: hidden !important;
 }

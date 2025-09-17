@@ -3,7 +3,7 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   overflow: hidden;
   border: none;
-  margin-bottom: var(--space-xl);
+  margin-bottom: 0;
   display: flex;
   justify-content: center;
   width: fit-content;

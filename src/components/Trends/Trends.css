@@ -8,15 +8,35 @@
 }
 
 .trends .container-fluid {
-  padding: var(--space-lg);
+  padding: var(--space-lg) !important;
+  width: 100% !important;
+  max-width: 90% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+.search-container {
+  align-self: flex-start;
+  margin-bottom: 0;
+  padding: 0 15px;
+  display: flex;
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
   width: 100%;
-  max-width: 100%;
-  margin: 0;
+}
+
+.search-group {
+  width: 350px;
 }
 
 .trends h1 {
   text-align: center;
-  margin-bottom: var(--space-xl);
+  margin-bottom: 0;
   color: var(--color-text-primary);
   font-size: 2.5rem;
   font-weight: 700;
@@ -88,8 +108,8 @@
 .table-responsive {
   overflow-x: auto;
   width: 100%;
-  max-width: 100%;
-  margin: var(--space-md) 0;
+  max-width: 1200px;
+  margin: var(--space-md) auto;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--color-border-light);

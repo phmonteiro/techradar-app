@@ -10,7 +10,6 @@ const AdminSidebar = ({ username, onLogout }) => {
       </div>
       <nav>
         <ul>
-          <li><Link to="/admin">Dashboard</Link></li>
           <li><Link to="/admin/technologies">Technologies</Link></li>
           <li><Link to="/admin/trends">Trends</Link></li>
           <li><Link to="/admin/comments">Comments</Link></li>

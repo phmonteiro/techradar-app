@@ -1,0 +1,56 @@
+/* Admin Comments Management Styles */
+@import './admin-variables.css';
+
+/* Comment list specific styles */
+.comment-text {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.approved {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: #27ae60;
+}
+
+.status.pending {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: #d35400;
+}
+
+.approve-button {
+  color: var(--admin-success);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0 3px;
+  border-radius: 3px;
+}
+
+.reject-button {
+  color: var(--admin-warning);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0 3px;
+  border-radius: 3px;
+}
+
+.approve-button:hover {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.reject-button:hover {
+  background-color: rgba(243, 156, 18, 0.1);
+}

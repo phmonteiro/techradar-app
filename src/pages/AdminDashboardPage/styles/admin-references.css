@@ -1,0 +1,19 @@
+/* Admin References Management Styles */
+@import './admin-variables.css';
+
+/* Reference list specific styles */
+.url-cell {
+  max-width: 150px;
+}
+
+.reference-link {
+  color: var(--admin-secondary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reference-link:hover {
+  text-decoration: underline;
+}

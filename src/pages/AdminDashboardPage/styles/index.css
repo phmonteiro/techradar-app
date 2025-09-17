@@ -1,0 +1,44 @@
+/* Main Admin Styles - Import all admin components */
+@import './admin-variables.css';
+@import './admin-layout.css';
+@import './admin-buttons.css';
+@import './admin-tables.css';
+@import './admin-forms.css';
+@import './admin-utils.css';
+
+/* Extended styles from moved files */
+@import './admin-buttons-extended.css';
+@import './admin-comments.css';
+@import './admin-content.css';
+@import './admin-forms-extended.css';
+@import './admin-modals.css';
+@import './admin-references.css';
+@import './admin-table-extended.css';
+@import './admin-ui.css';
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .admin-table th:not(:first-child):not(:nth-child(2)):not(:last-child),
+  .admin-table td:not(:first-child):not(:nth-child(2)):not(:last-child) {
+    display: none;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

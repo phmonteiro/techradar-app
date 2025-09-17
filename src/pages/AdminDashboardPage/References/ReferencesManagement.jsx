@@ -4,13 +4,13 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faSearch, faHome } from '@fortawesome/free-solid-svg-icons';
 import DeleteReferenceConfirmation from './DeleteReferenceConfirmation.jsx';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const ReferencesManagement = () => {
   const [references, setReferences] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -22,13 +22,29 @@ const ReferencesManagement = () => {
   
   const navigate = useNavigate();
   
+  // Filter references based on filter input
+  const filteredReferences = references.filter(reference => {
+    if (!filter) return true;
+    
+    const searchTerm = filter.toLowerCase();
+    
+    return (
+      reference.Id?.toString().toLowerCase().includes(searchTerm) ||
+      reference.Label?.toLowerCase().includes(searchTerm) ||
+      reference.Title?.toLowerCase().includes(searchTerm) ||
+      reference.Url?.toLowerCase().includes(searchTerm) ||
+      reference.Source?.toLowerCase().includes(searchTerm) ||
+      reference.PublicationDate?.toLowerCase().includes(searchTerm)
+    );
+  });
+  
   const fetchReferences = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('authToken');
       
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/admin/references?page=${pagination.page}&limit=${pagination.limit}&search=${search}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/references?page=${pagination.page}&limit=${pagination.limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -58,12 +74,6 @@ const ReferencesManagement = () => {
   useEffect(() => {
     fetchReferences();
   }, [pagination.page, pagination.limit]);
-  
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPagination({ ...pagination, page: 1 });
-    fetchReferences();
-  };
   
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > pagination.totalPages) return;
@@ -114,19 +124,17 @@ const ReferencesManagement = () => {
       </div>
       
       <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <div className="search-group">
-            <input
-              type="text"
-              placeholder="Search references..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button type="submit">
-              <FontAwesomeIcon icon={faSearch} /> Search
-            </button>
-          </div>
-        </form>
+        <div className="search-group">
+          <input
+            type="text"
+            placeholder="Filter all fields..."
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <button type="button">
+            <FontAwesomeIcon icon={faSearch} /> Search
+          </button>
+        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
@@ -149,8 +157,8 @@ const ReferencesManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                {references.length > 0 ? (
-                  references.map(reference => (
+                {filteredReferences.length > 0 ? (
+                  filteredReferences.map(reference => (
                     <tr key={reference.Id}>
                       <td data-tooltip={reference.Id}>{reference.Id}</td>
                       <td data-tooltip={reference.Label}>{reference.Label}</td>
@@ -177,7 +185,9 @@ const ReferencesManagement = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="no-data">No references found</td>
+                    <td colSpan="7" className="no-data">
+                      {filter ? 'No references match the filter criteria' : 'No references found'}
+                    </td>
                   </tr>
                 )}
               </tbody>

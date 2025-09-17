@@ -1,47 +1,89 @@
 /* Admin Dashboard Specific Styles */
-@import './AdminVariables.css';
+@import './styles/admin-variables.css';
 
 /* Dashboard Layout */
 .admin-dashboard {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  margin-left: 250px; /* Adjust based on your sidebar width */
+  padding: 10px;
+  margin-left: 280px !important; /* Match the sidebar width */
+  min-height: 100vh;
+  width: calc(100% - 280px);
+  box-sizing: border-box;
+}
+
+.admin-dashboard h2 {
+  text-align: center;
+  color: var(--admin-dark);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .dashboard-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 20px;
+  max-width: 720px;
+  margin: 0 auto 10px auto;
+  justify-content: center;
 }
 
 .stat-card {
   display: flex;
-  align-items: center; /* Vertically align items */
+  align-items: flex-start; /* Change to flex-start to prevent overflow */
   gap: 1rem; /* Add spacing between the icon and content */
+  height: 170px; /* Increased to accommodate buttons properly */
+  width: 340px;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
+  box-sizing: border-box; /* Ensure padding is included in height */
+  overflow: hidden; /* Prevent content from overflowing */
+}
+
+.stat-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--admin-dark);
+  line-height: 1.2;
 }
 
 .stat-icon {
-  font-size: 2rem;
+  font-size: 1.6rem !important; /* Use !important to override h3 font-size and make icons larger */
   color: #555;
   flex-shrink: 0;
-  margin-right: 15px;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .stat-content {
   flex: 1; /* Allow the content to take up remaining space */
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0; /* Prevent flex item from overflowing */
+  overflow: hidden;
+  align-items: center;
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-top: var(--space-sm);
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--admin-dark);
-  margin: 10px 0;
+  margin: 0.5rem 0;
+  line-height: 1;
 }
 
 .stat-number {
@@ -55,7 +97,141 @@
 
 .stat-link {
   display: inline-block;
-  margin-right: 10px;
-  color: #007bff;
-  text-decoration: none;
+  width: auto;
+  color: white !important;
+  text-decoration: none !important;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.stat-link:hover {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.stat-link:visited {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+/* Gradient button styles for stat cards and action buttons */
+.stat-content .stat-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-content button {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border: none;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  width: auto;
+}
+
+.stat-content button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.action-buttons button {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  margin: 0 10px 0 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.action-button {
+  display: inline-block;
+  color: white !important;
+  text-decoration: none !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.action-button:visited {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.action-button.secondary {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: white !important;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.quick-actions {
+  margin-top: 0;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.quick-actions h3 {
+  margin: 0 0 15px 0;
+  color: var(--admin-dark);
+  font-size: 18px;
+  align-items: center;
+}
+
+/* Responsive Design for Admin Dashboard */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    max-width: 360px;
+  }
+  
+  .stat-card {
+    width: 100%;
+    max-width: 340px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .quick-actions {
+    max-width: 360px;
+  }
 }

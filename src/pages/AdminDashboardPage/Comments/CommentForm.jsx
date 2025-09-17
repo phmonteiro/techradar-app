@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import '../AdminStyles.css';
+import '../styles/index.css';
 
 const CommentForm = () => {
   const { id } = useParams();
@@ -12,30 +12,55 @@ const CommentForm = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [technologies, setTechnologies] = useState([]);
+  const [trends, setTrends] = useState([]);
   const [form, setForm] = useState({
-    TechnologyLabel: '',
+    Type: 'technology', // Default to technology
+    Label: '', // This will replace TechnologyLabel
     Author: '',
     Email: '',
     Text: '',
     IsApproved: false
   });
 
-  // Fetch technologies for dropdown
+  // Debug logging
+  console.log('CommentForm rendering, id:', id);
+  console.log('Loading state:', loading);
+  console.log('Error state:', error);
+  console.log('Technologies:', technologies);
+
+  // Fetch technologies and trends for dropdown
   useEffect(() => {
-    const fetchTechnologies = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await axios.get('${import.meta.env.VITE_API_URL}/api/admin/technologies', {
+        console.log('Fetching technologies and trends with token:', token ? 'Present' : 'Missing');
+        
+        // Fetch technologies
+        const techResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/technologies`, {
           headers: { Authorization: `Bearer ${token}` }
-        }  );
-        setTechnologies(response.data.technologies);
+        });
+        
+        // Fetch trends
+        const trendsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/trends`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        console.log('Technologies response:', techResponse.data);
+        console.log('Trends response:', trendsResponse.data);
+        
+        // Handle different possible response structures
+        const technologiesData = techResponse.data.technologies || techResponse.data.data || techResponse.data;
+        const trendsData = trendsResponse.data.trends || trendsResponse.data.data || trendsResponse.data;
+        
+        setTechnologies(Array.isArray(technologiesData) ? technologiesData : []);
+        setTrends(Array.isArray(trendsData) ? trendsData : []);
       } catch (error) {
-        console.error('Error fetching technologies:', error);
-        setError('Failed to load technologies. Please try again later.');
+        console.error('Error fetching data:', error);
+        setError('Failed to load technologies and trends. Please try again later.');
       }
     };
 
-    fetchTechnologies();
+    fetchData();
   }, []);
 
   // If editing, fetch the comment data
@@ -82,7 +107,7 @@ const CommentForm = () => {
       const token = localStorage.getItem('authToken');
       
       // Form validation
-      if (!form.TechnologyLabel || !form.Author || !form.Email || !form.Text) {
+      if (!form.Type || !form.Label || !form.Author || !form.Email || !form.Text) {
         setError('Please fill all required fields');
         return;
       }
@@ -102,12 +127,13 @@ const CommentForm = () => {
         setSuccess('Comment updated successfully!');
       } else {
         // Create new comment
-        await axios.post('${import.meta.env.VITE_API_URL}/api/admin/comments', form, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/comments`, form, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccess('Comment created successfully!');
         setForm({
-          TechnologyLabel: '',
+          Type: 'technology',
+          Label: '',
           Author: '',
           Email: '',
           Text: '',
@@ -126,6 +152,7 @@ const CommentForm = () => {
   };
 
   if (loading) {
+    console.log('Rendering loading state');
     return (
       <div className="loading-spinner">
         <div className="spinner"></div>
@@ -134,6 +161,8 @@ const CommentForm = () => {
     );
   }
 
+  console.log('Rendering main form');
+  
   return (
     <div className="admin-form-container">
       <div className="admin-page-header">
@@ -147,22 +176,45 @@ const CommentForm = () => {
       {success && <div className="success-message">{success}</div>}
 
       <form onSubmit={handleSubmit} className="admin-form">
-        <div className="form-group">
-          <label htmlFor="TechnologyLabel">Technology *</label>
-          <select
-            id="TechnologyLabel"
-            name="TechnologyLabel"
-            value={form.TechnologyLabel}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select a technology</option>
-            {technologies.map(tech => (
-              <option key={tech.Id} value={tech.Label}>
-                {tech.Name}
-              </option>
-            ))}
-          </select>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="Type">Type *</label>
+            <select
+              id="Type"
+              name="Type"
+              value={form.Type}
+              onChange={handleChange}
+              required
+            >
+              <option value="technology">Technology</option>
+              <option value="trend">Trend</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="Label">{form.Type === 'technology' ? 'Technology' : 'Trend'} *</label>
+            <select
+              id="Label"
+              name="Label"
+              value={form.Label}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select a {form.Type}</option>
+              {form.Type === 'technology' 
+                ? technologies.map(tech => (
+                    <option key={tech.Id || tech.Label} value={tech.Label}>
+                      {tech.Name}
+                    </option>
+                  ))
+                : trends.map(trend => (
+                    <option key={trend.Id || trend.Label} value={trend.Label}>
+                      {trend.Name}
+                    </option>
+                  ))
+              }
+            </select>
+          </div>
         </div>
 
         <div className="form-row">

@@ -1,0 +1,186 @@
+/* Admin Button Styles */
+@import './admin-variables.css';
+
+/* Back Button Styling */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: white !important;
+  text-decoration: none !important;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: white !important;
+  text-decoration: none !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-button:visited {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.back-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.home-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+  text-decoration: none;
+}
+
+.home-button::before {
+  content: "🏠";
+  font-size: 1.1em;
+}
+
+/* Modern Admin Buttons */
+.create-button {
+  background: linear-gradient(135deg, var(--color-success) 0%, #16a085 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.create-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+  text-decoration: none;
+}
+
+.create-button::before {
+  content: "➕";
+  font-size: 1.1em;
+}
+
+.edit-button, .delete-button {
+  background: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 var(--space-xs);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.edit-button {
+  color: var(--color-primary);
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.edit-button:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.delete-button {
+  color: var(--color-error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.delete-button:hover {
+  background: var(--color-error);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Button state overrides */
+.delete-button {
+  color: var(--admin-danger);
+}
+
+.edit-button:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.delete-button:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Form action buttons */
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--admin-secondary);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: var(--admin-light);
+  color: var(--admin-dark);
+  border: 1px solid var(--admin-border);
+}
+
+.btn-secondary:hover {
+  background-color: #dde4e6;
+}
+
+.btn-danger {
+  background-color: var(--admin-danger);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}

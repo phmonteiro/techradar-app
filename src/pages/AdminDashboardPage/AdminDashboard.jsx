@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLayerGroup, faComment, faBook, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import './AdminDashboard.css';
 import AdminSidebar from './AdminSidebar'; // Import the sidebar component
+import StatCard from './StatCard'; // Import the new StatCard component
 
 const AdminDashboard = () => {
   const { currentUser } = useAuth();
@@ -24,7 +25,7 @@ const AdminDashboard = () => {
     if (!token) return;
 
     // Fetch technologies count
-    axios.get('${import.meta.env.VITE_API_URL}/api/technologies/count', {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/technologies/count`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
       });
 
     // Fetch comments count
-    axios.get('${import.meta.env.VITE_API_URL}/api/comments/count', {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/comments/count`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -60,7 +61,7 @@ const AdminDashboard = () => {
       });
 
     // Fetch references count
-    axios.get('${import.meta.env.VITE_API_URL}/api/references/count', {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/references/count`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -78,7 +79,7 @@ const AdminDashboard = () => {
       });
 
     // Fetch trends count
-    axios.get('${import.meta.env.VITE_API_URL}/api/trends/count', {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/trends/count`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -113,71 +114,58 @@ const AdminDashboard = () => {
       <div className="admin-dashboard">
         <h2>Admin Dashboard</h2>
         <div className="dashboard-stats">
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faLayerGroup} />
-            </div>
-            <div className="stat-content">
-              <h3>Technologies</h3>
-              <div className="stat-value">
-                {renderStatValue(stats.technologies)}
-              </div>
-              <Link to="/admin/technologies/create" className="stat-link">Add New Technology</Link>
-            <span> </span>
-              <Link to="/admin/technologies" className="stat-link">Manage Technologies</Link>
-            </div>
-          </div>
+          <StatCard 
+            icon="🚀"
+            title="Technologies"
+            stat={renderStatValue(stats.technologies)}
+            buttons={[
+              { to: "/admin/technologies/create", text: "Add Technology" },
+              { to: "/admin/technologies", text: "Manage Technologies" }
+            ]}
+          />
           
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faLayerGroup} />
-            </div>
-            <div className="stat-content">
-              <h3>Trends</h3>
-              <div className="stat-value">
-                {renderStatValue(stats.trends)}
-              </div>
-              <Link to="/admin/trends" className="stat-link">Manage Trends</Link>
-            </div>
-          </div>
+          <StatCard 
+            icon="📈"
+            title="Trends"
+            stat={renderStatValue(stats.trends)}
+            buttons={[
+              { to: "/admin/trends/create", text: "Add Trend" },
+              { to: "/admin/trends", text: "Manage Trends" }
+            ]}
+          />
 
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faComment} />
-            </div>
-            <div className="stat-content">
-              <h3>Comments</h3>
-              <div className="stat-value">
-                {renderStatValue(stats.comments)}
-              </div>
-              <Link to="/admin/comments" className="stat-link">Manage Comments</Link>
-            </div>
-          </div>
+          <StatCard 
+            icon="💬"
+            title="Comments"
+            stat={renderStatValue(stats.comments)}
+            buttons={[
+              { to: "/admin/comments", text: "Manage Comments" }
+            ]}
+          />
           
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faBook} />
-            </div>
-            <div className="stat-content">
-              <h3>References</h3>
-              <div className="stat-value">
-                {renderStatValue(stats.references)}
-              </div>
-              <Link to="/admin/references" className="stat-link">Manage References</Link>
-            </div>
-          </div>
+          <StatCard 
+            icon="🔗"
+            title="References"
+            stat={renderStatValue(stats.references)}
+            buttons={[
+              { to: "/admin/references", text: "Manage References" }
+            ]}
+          />
         </div>
         
         <div className="quick-actions">
           <h3>Quick Actions</h3>
           <div className="action-buttons">
-            <Link to="/admin/technologies/create" className="action-button">
-              Add New Technology
-            </Link>
-            <span> </span>
-            <Link to="/" target="_blank" className="action-button secondary">
-              View Public Site
-            </Link>
+            <button>
+              <Link to="/admin/technologies/create" className="action-button">
+                Add New Technology
+              </Link>
+            </button>
+            <button>
+              <Link to="/" target="_blank" className="action-button secondary">
+                View Public Site
+              </Link>
+            </button>
           </div>
         </div>
       </div>

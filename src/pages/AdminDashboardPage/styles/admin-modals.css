@@ -1,0 +1,91 @@
+/* Admin Modal and Responsive Styles */
+@import './admin-variables.css';
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+}
+
+.modal-header {
+  margin-bottom: 15px;
+}
+
+.modal-title {
+  color: var(--admin-danger);
+  margin: 0 0 10px 0;
+  font-size: 20px;
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background-color: var(--admin-light);
+  color: var(--admin-dark);
+  border: 1px solid var(--admin-border);
+}
+
+.btn-danger {
+  background-color: var(--admin-danger);
+  color: white;
+  border: none;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #dde4e6;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .admin-table th:not(:first-child):not(:nth-child(2)):not(:last-child),
+  .admin-table td:not(:first-child):not(:nth-child(2)):not(:last-child) {
+    display: none;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+  }
+}

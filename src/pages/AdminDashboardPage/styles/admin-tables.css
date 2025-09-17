@@ -1,0 +1,192 @@
+/* Admin Table Styles */
+@import './admin-variables.css';
+
+/* Search Container */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-group {
+  display: flex;
+  max-width: 500px;
+}
+
+.search-group input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--admin-border);
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font-size: 14px;
+}
+
+.search-group button {
+  background-color: var(--admin-secondary);
+  color: white;
+  border: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-group button:hover {
+  background-color: #2980b9;
+}
+
+/* Table Styles - Admin specific */
+.admin-list-container .table-responsive {
+  overflow-x: hidden !important;
+  overflow-y: visible;
+  margin-bottom: 20px;
+  width: 100%;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed !important;
+  margin-left: 0;
+}
+
+.admin-table th {
+  background-color: var(--admin-light);
+  color: var(--admin-dark);
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid var(--admin-border);
+  font-weight: 600;
+}
+
+.admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--admin-border);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover {
+  background-color: var(--admin-hover);
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--admin-gray);
+  padding: 30px 0 !important;
+  font-style: italic;
+}
+
+/* Equal width columns */
+.admin-table th,
+.admin-table td {
+  width: 15.33%; /* Redistributed width for remaining 6 columns */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+/* ID column specific styling - smaller width and allow wrapping */
+.admin-table th:first-child,
+.admin-table td:first-child {
+  width: 8% !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
+  min-width: 60px;
+  max-width: 80px;
+}
+
+/* Tooltip balloon */
+.admin-table th:hover,
+.admin-table td:hover {
+  overflow: visible;
+}
+
+.admin-table th:hover::after,
+.admin-table td:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  white-space: normal;
+  z-index: 10;
+  width: max-content;
+  max-width: 300px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.admin-table th:hover::after,
+.admin-table td:hover::after {
+  opacity: 1;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: white;
+  border: 1px solid var(--admin-border);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: var(--admin-light);
+  border-color: var(--admin-secondary);
+}
+
+.pagination button:disabled {
+  color: var(--admin-gray);
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: var(--admin-dark);
+  margin: 0 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .admin-table th:not(:first-child):not(:nth-child(2)):not(:last-child),
+  .admin-table td:not(:first-child):not(:nth-child(2)):not(:last-child) {
+    display: none;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+  }
+}

@@ -10,16 +10,15 @@ import TechnologiesManagement from './pages/AdminDashboardPage/Technologies/Tech
 import CommentsManagement from './pages/AdminDashboardPage/Comments/CommentsManagement';
 import ReferencesManagement from './pages/AdminDashboardPage/References/ReferencesManagement';
 import ReferenceForm from './pages/AdminDashboardPage/References/ReferenceForm';
-import CreateTechnology from './pages/AdminDashboardPage/Technologies/CreateTechnology';
+import TechnologyForm from './pages/AdminDashboardPage/Technologies/TechnologyForm';
 import CommentForm from './pages/AdminDashboardPage/Comments/CommentForm';
 import UnauthorizedPage from './components/Auth/UnauthorizedPage';
 import TechnologyView from './pages/TechnologyPage/TechnologyView';
 import Technologies from './components/Technologies/Technologies';
-import EditTechnology from './pages/AdminDashboardPage/Technologies/EditTechnology';
 import TrendView from './pages/TrendPage/TrendView';
 import Trends from './components/Trends/Trends';
 import TrendsManagement from './pages/AdminDashboardPage/Trends/TrendsManagement';
-import CreateTrend from './pages/AdminDashboardPage/Trends/CreateTrend';
+import TrendForm from './pages/AdminDashboardPage/Trends/TrendForm';
 // Import other components as needed
 
 function App() {
@@ -46,12 +45,12 @@ function App() {
           } />
           <Route path="/admin/technologies/create" element={
             <ProtectedRoute requiredRole="Admin">
-              <CreateTechnology />
+              <TechnologyForm />
             </ProtectedRoute>
           } />
           <Route path="/admin/technologies/edit/:label" element={
             <ProtectedRoute requiredRole="Admin">
-              <CreateTechnology />
+              <TechnologyForm />
             </ProtectedRoute>
           } />
           <Route path="/admin/trends" element={
@@ -61,12 +60,12 @@ function App() {
           } />
           <Route path="/admin/trends/create" element={
             <ProtectedRoute requiredRole="Admin">
-              <CreateTrend />
+              <TrendForm />
             </ProtectedRoute>
           } />
           <Route path="/admin/trends/edit/:label" element={
             <ProtectedRoute requiredRole="Admin">
-              <CreateTrend />
+              <TrendForm />
             </ProtectedRoute>
           } />
           <Route path="/admin/comments" element={
@@ -75,6 +74,11 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/admin/comments/create" element={
+            <ProtectedRoute requiredRole="Admin">
+              <CommentForm />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/comments/edit/:id" element={
             <ProtectedRoute requiredRole="Admin">
               <CommentForm />
             </ProtectedRoute>
