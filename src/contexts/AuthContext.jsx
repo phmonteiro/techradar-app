@@ -83,10 +83,12 @@ export const AuthProvider = ({ children }) => {
 
   const hasRole = (requiredRole) => {
     if (!currentUser) return false;
-    if (requiredRole === 'Admin') {
-      return currentUser.role === 'Admin';
-    }
-    return ['Admin', 'Viewer'].includes(currentUser.role);
+    
+    // Admin can access everything
+    if (currentUser.role === 'Admin') return true;
+    
+    // For non-admins, check exact role match
+    return currentUser.role === requiredRole;
   };
 
   return (

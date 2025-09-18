@@ -62,43 +62,25 @@ const ProgressTrack = ({
             </div>
           ))}
         </div>
-      </div>
-    );
-  }
-
-  // Technology progress track with modal
-  return (
-    <div className="progress-track technology-progress">
-      <div className="progress-points">
-        {stageList.map((stage) => (
-          <div className="progress-point" key={stage}>
-            <div className={`point ${stage === currentStage ? 'active' : ''}`}></div>
-            <span className={`label ${stage === currentStage ? 'active' : ''}`}>
-              {stage}
-            </span>
+        
+        {isAdmin && (
+          <div className="admin-controls">
+            <button className="update-stage-btn" onClick={handleOpenModal}>
+              Update Stage
+            </button>
           </div>
-        ))}
-      </div>
-      
-      {isAdmin && (
-        <div className="admin-controls">
-          <button className="update-stage-btn" onClick={handleOpenModal}>
-            Update Stage
-          </button>
-        </div>
-      )}
+        )}
 
-      {/* Modal for stage update */}
-      {showModal && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Modal for trend stage update */}
+        {showModal && (
+          <div className="modal-content-direct">
             <div className="modal-header">
-              <h3>Update Stage</h3>
+              <h3>Update Trend Stage</h3>
               <button className="close-btn" onClick={handleCloseModal}>×</button>
             </div>
             
             <div className="modal-body">
-              <p>Select the new stage for this item:</p>
+              <p>Select the new stage for this trend:</p>
               <div className="stage-options">
                 {stageList.map((stage) => (
                   <label key={stage} className="stage-option">
@@ -127,6 +109,71 @@ const ProgressTrack = ({
                 Update Stage
               </button>
             </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Technology progress track with modal
+  return (
+    <div className="progress-track technology-progress">
+      <div className="progress-points">
+        {stageList.map((stage) => (
+          <div className="progress-point" key={stage}>
+            <div className={`point ${stage === currentStage ? 'active' : ''}`}></div>
+            <span className={`label ${stage === currentStage ? 'active' : ''}`}>
+              {stage}
+            </span>
+          </div>
+        ))}
+      </div>
+      
+      {isAdmin && (
+        <div className="admin-controls">
+          <button className="update-stage-btn" onClick={handleOpenModal}>
+            Update Stage
+          </button>
+        </div>
+      )}
+
+      {/* Modal for stage update */}
+      {showModal && (
+        <div className="modal-content-direct">
+          <div className="modal-header">
+            <h3>Update Technology Stage</h3>
+            <button className="close-btn" onClick={handleCloseModal}>×</button>
+          </div>
+          
+          <div className="modal-body">
+            <p>Select the new stage for this technology:</p>
+            <div className="stage-options">
+              {stageList.map((stage) => (
+                <label key={stage} className="stage-option">
+                  <input
+                    type="radio"
+                    name="stage"
+                    value={stage}
+                    checked={selectedStage === stage}
+                    onChange={(e) => setSelectedStage(e.target.value)}
+                  />
+                  <span className="stage-name">{stage}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          
+          <div className="modal-footer">
+            <button className="cancel-btn" onClick={handleCloseModal}>
+              Cancel
+            </button>
+            <button 
+              className="save-btn" 
+              onClick={handleStageUpdate}
+              disabled={selectedStage === currentStage}
+            >
+              Update Stage
+            </button>
           </div>
         </div>
       )}

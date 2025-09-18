@@ -16,19 +16,31 @@ const CommentsSection = ({ label, type }) => {
   const { currentUser } = useAuth ? useAuth() : { currentUser: null };
   const authToken = localStorage.getItem('authToken');
 
+  // Debug logging
+  console.log('CommentsSection props:', { label, type });
+
   const commentsPerPage = 6;
   const totalPages = Math.ceil(totalComments / commentsPerPage);
 
   
   const fetchComments = useCallback(async () => {
+    console.log('fetchComments called with:', { label, type });
+    
     if (!label || !type) {
+      console.error('Missing required props:', { label, type });
       setError('Missing label or type for comments.');
       setIsCommentsLoading(false);
       return;
     }
+    
     try {
       setIsCommentsLoading(true);
-      const response = await axios.get(`${API_URL}/api/comments/${type}/${label}?page=${currentPage}&limit=${commentsPerPage}`, {
+      setError(null);
+      
+      const url = `${API_URL}/api/comments/${type}/${label}?page=${currentPage}&limit=${commentsPerPage}`;
+      console.log('Fetching comments from URL:', url);
+      
+      const response = await axios.get(url, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
@@ -42,6 +54,7 @@ const CommentsSection = ({ label, type }) => {
       setTotalComments(response.data.total || response.data.count || 0);
       setError(null);
     } catch (error) {
+      console.error('Error fetching comments:', error);
       setError('Failed to load comments. Please try again later.');
     } finally {
       setIsCommentsLoading(false);

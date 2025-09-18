@@ -47,19 +47,22 @@
 }
 
 .contact-admin-btn {
-  background: var(--color-primary, #007bff);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
-  padding: var(--space-sm, 0.75rem) var(--space-lg, 2rem);
-  border-radius: var(--radius-md, 8px);
+  padding: 12px 24px;
+  border-radius: var(--radius-lg, 12px);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+  font-size: 0.95rem;
 }
 
 .contact-admin-btn:hover {
-  background: var(--color-primary-dark, #0056b3);
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-secondary) 100%);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .progress-section {
@@ -74,6 +77,14 @@
   background: white;
   border-radius: var(--radius-lg, 12px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.1));
+  overflow: hidden;
+}
+
+.comments-section-container {
+  background: white;
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.1));
+  margin-top: var(--space-md, 1rem);
   overflow: hidden;
 }
 

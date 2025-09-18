@@ -30,7 +30,16 @@ const ItemDetails = ({ item, itemType }) => {
     }
   }, [label, item.Label, itemType]);
 
-  const isAdmin = hasRole && hasRole('admin');
+  const isAdmin = hasRole && hasRole('Admin');
+
+  // Helper function to ensure URL has proper protocol
+  const formatUrl = (url) => {
+    if (!url) return '#';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `https://${url}`;
+  };
 
   return (
     <div className="item-details">
@@ -201,10 +210,21 @@ const ItemDetails = ({ item, itemType }) => {
                   <div key={index} className="reference-item">
                     <h4>
                       <a 
-                        href={reference.URL} 
+                        href={formatUrl(reference.Url)} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="reference-link"
+                        onClick={(e) => {
+                          // Debug logging
+                          console.log('Link clicked:', reference.Url);
+                          console.log('Formatted URL:', formatUrl(reference.Url));
+                          
+                          // Prevent default if URL is invalid
+                          if (!reference.Url || reference.Url.trim() === '') {
+                            e.preventDefault();
+                            alert('No URL provided for this reference');
+                          }
+                        }}
                       >
                         {reference.Title}
                       </a>

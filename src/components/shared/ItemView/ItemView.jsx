@@ -96,6 +96,7 @@ const ItemView = ({
   }
 
   const isAdmin = hasRole && hasRole('admin');
+  console.log("itemView isAdmin: "+isAdmin)
 
   return (
     <div className="item-view">
@@ -142,6 +143,16 @@ const ItemView = ({
             itemType={itemType}
           />
         </div>
+
+        {/* Comments Section */}
+        {item && item.Label && (
+          <div className="comments-section-container">
+            <CommentsSection 
+              label={item.Label}
+              type={itemType}
+            />
+          </div>
+        )}
 
         <ContactAdminModal
           isOpen={isContactModalOpen}
