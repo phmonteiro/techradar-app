@@ -188,7 +188,7 @@ function radar_visualization(config) {
   for (quadrant of [2,3,1,0]) {
     for (var ring = 0; ring < 4; ring++) {
       var entries = segmented[quadrant][ring];
-      entries.sort(function(a,b) { return a.label.localeCompare(b.label); })
+      entries.sort(function(a,b) { return a.name.localeCompare(b.name); })
       for (var i=0; i<entries.length; i++) {
         entries[i].id = "" + id++;
       }
@@ -363,7 +363,7 @@ function radar_visualization(config) {
               .attr("transform", function(d, i) { return legend_transform(quadrant, ring, config.legend_column_width, i, previousLegendHeight); })
               .attr("class", "legend" + quadrant + ring)
               .attr("id", function(d, i) { return "legendItem" + d.id; })
-              .text(function(d) { return d.id + ". " + d.label; })
+              .text(function(d) { return d.id + ". " + d.name; })
               .style("font-family", config.font_family)
               .style("font-size", "11px")
               .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
@@ -448,7 +448,7 @@ function radar_visualization(config) {
   function showBubble(d) {
     if (d.active || config.print_layout) {
       var tooltip = d3.select("#bubble text")
-        .text(d.label);
+        .text(d.name);
       var bbox = tooltip.node().getBBox();
       d3.select("#bubble")
         .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
@@ -526,7 +526,7 @@ function radar_visualization(config) {
 
     // blip text
     if (d.active || config.print_layout) {
-      var blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
+      var blip_text = config.print_layout ? d.id : d.name.match(/[a-z]/i);
       blip.append("text")
         .text(blip_text)
         .attr("y", 3)

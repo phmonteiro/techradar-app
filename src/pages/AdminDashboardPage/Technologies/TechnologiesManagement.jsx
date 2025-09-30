@@ -54,7 +54,7 @@ const TechnologiesManagement = () => {
     return (
       tech.Id?.toString().toLowerCase().includes(searchTerm) ||
       tech.Name?.toLowerCase().includes(searchTerm) ||
-      tech.Label?.toLowerCase().includes(searchTerm) ||
+      tech.GeneratedID?.toLowerCase().includes(searchTerm) ||
       tech.Stage?.toLowerCase().includes(searchTerm) ||
       tech.TechnologySegment?.toLowerCase().includes(searchTerm) ||
       formattedDate.toLowerCase().includes(searchTerm)
@@ -113,7 +113,7 @@ const TechnologiesManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/admin/technologies/${techToDelete.Label}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/technologies/${techToDelete.GeneratedID}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -168,7 +168,7 @@ const TechnologiesManagement = () => {
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Label</th>
+                  <th>GeneratedID</th>
                   <th>Stage</th>
                   <th>Technology Segment</th>
                   <th>Last Review Date</th>
@@ -178,10 +178,10 @@ const TechnologiesManagement = () => {
               <tbody>
                 {filteredTechnologies.length > 0 ? (
                   filteredTechnologies.map(tech => (
-                    <tr key={tech.Label}>
+                    <tr key={tech.GeneratedID}>
                       <td data-tooltip={tech.Id}>{tech.Id}</td>
                       <td data-tooltip={tech.Name}>{tech.Name}</td>
-                      <td data-tooltip={tech.Label}>{tech.Label}</td>
+                      <td data-tooltip={tech.GeneratedID}>{tech.GeneratedID}</td>
                       <td data-tooltip={tech.Stage}>{tech.Stage}</td>
                       <td data-tooltip={tech.TechnologySegment}>{tech.TechnologySegment}</td>
                       <td data-tooltip={formatDate(tech.LastReviewDate)}>
@@ -189,7 +189,7 @@ const TechnologiesManagement = () => {
                       </td>
                       <td className="actions-cell">
                         <Link 
-                          to={`/admin/technologies/edit/${tech.Label}`}
+                          to={`/admin/technologies/edit/${tech.GeneratedID}`}
                           className="edit-button"
                         >
                           <FontAwesomeIcon icon={faEdit} />

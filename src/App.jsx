@@ -48,7 +48,7 @@ function App() {
               <TechnologyForm />
             </ProtectedRoute>
           } />
-          <Route path="/admin/technologies/edit/:label" element={
+          <Route path="/admin/technologies/edit/:generatedId" element={
             <ProtectedRoute requiredRole="Admin">
               <TechnologyForm />
             </ProtectedRoute>
@@ -63,7 +63,7 @@ function App() {
               <TrendForm />
             </ProtectedRoute>
           } />
-          <Route path="/admin/trends/edit/:label" element={
+          <Route path="/admin/trends/edit/:generatedId" element={
             <ProtectedRoute requiredRole="Admin">
               <TrendForm />
             </ProtectedRoute>
@@ -89,7 +89,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/admin/references/add/:type/:label" element={
+          <Route path="/admin/references/add/:type/:generatedId" element={
             <ProtectedRoute requiredRole="Admin">
               <ReferenceForm />
             </ProtectedRoute>
@@ -112,7 +112,7 @@ function App() {
 
           
           {/* Viewer routes - require at least Viewer role */}
-          <Route path="/technologies/:label" element={
+          <Route path="/technologies/:generatedId" element={
             <ProtectedRoute requiredRole="Viewer">
               <TechnologyView />
             </ProtectedRoute>
@@ -130,7 +130,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/trends/:label" element={
+          <Route path="/trends/:generatedId" element={
             <ProtectedRoute requiredRole="Viewer">
               <TrendView />
             </ProtectedRoute>

@@ -1,0 +1,153 @@
+GeneratedID;Name;Quadrant;RecommendedAction;Ring
+TRE-31;DIY Health;2;EXPLORE;2
+TRE-51;Human Body Optimization;2;EXPLORE;2
+TRE-60;On-Demand Delivery;0;EXPLORE;2
+TRE-69;Quantified Self;2;NO ACTION;3
+TRE-74;Smart Cities;0;EXPLORE;2
+TRE-121;Reduce Risk of Cognitive Decline;2;EXPLORE;2
+TRE-122;Liquid Biopsy for Cancer Prevention;2;NO ACTION;3
+TRE-123;AI in Dermatology;2;EXPLORE;2
+TRE-124;Fertility Benefits for Corporate Clients;2;EXPLORE;2
+TRE-125;Voice Biomarkers to detect Diseases;2;EXPLORE;2
+TRE-126;Precision Prenatal Care;2;EXPLORE;2
+TRE-127;Proactive Depression Diagnosis;2;EXPLORE;2
+TRE-128;Mobile Diagnosis Services;2;VALIDATE;1
+TRE-129;Remote MSK Rehabilitation;2;VALIDATE;1
+TRE-130;Pharmacogenetics to increase quality of care;2;VALIDATE;1
+TRE-131;Home Base Cardiac Rehabilitation;2;VALIDATE;1
+TRE-132;Bike freeway;0;EXPLORE;2
+TRE-133;Luminous Pathways;0;EXPLORE;2
+TRE-134;Road Traffic as Software;0;EXPLORE;2
+TRE-137;Robotaxi;0;EXPLORE;2
+TRE-139;Shared Mobility;0;EXPLORE;2
+TRE-140;Micromobility;0;VALIDATE;1
+TRE-141;Navigation Apps;0;EXPLORE;2
+TRE-142;Hyperloop Trains;0;EXPLORE;2
+TRE-143;Supersonic flight;0;NO ACTION;3
+TRE-144;Hypersonic travel;0;NO ACTION;3
+TRE-146;Pay-per-Mile | Pay-per-Use;0;VALIDATE;1
+TRE-147;In-Vehicle Experience;0;EXPLORE;2
+TRE-148;Personalized Vehicles;0;EXPLORE;2
+TRE-149;Private Spaceflight;0;EXPLORE;2
+TRE-150;Space Tourism;0;EXPLORE;2
+TRE-151;Starship Vehicle (Multiplanetary travel);0;NO ACTION;3
+TRE-152;All-in-One Solutions;1;EXPLORE;2
+TRE-153;Flying taxis;0;EXPLORE;2
+TRE-154;Delivery Drone;0;EXPLORE;2
+TRE-155;Electric Vehicles;0;ACT NOW;0
+TRE-156;Insurance AI;1;VALIDATE;1
+TRE-158;Transdermal Patches;2;NO ACTION;3
+TRE-159;Digital solutions for mental wellness;2;EXPLORE;2
+TRE-160;Self-Diagnostic;2;EXPLORE;2
+TRE-161;Health Savings Accounts;1;VALIDATE;1
+TRE-162;Hormone and drug free birth control;2;NO ACTION;3
+TRE-163;Voice Recognition Solutions;3;EXPLORE;2
+TRE-164;Aging in place;2;VALIDATE;1
+TRE-165;Femtech;2;EXPLORE;2
+TRE-167;Self Healing Concrete;3;EXPLORE;2
+TRE-168;Transparent Aluminum;3;NO ACTION;3
+TRE-169;Light-emitting cement;3;EXPLORE;2
+TRE-170;Pollution Absorbing Bricks;3;NO ACTION;3
+TRE-171;Invisible Solar Panels;3;EXPLORE;2
+TRE-172;Underwater Houses;3;NO ACTION;3
+TRE-173;Heat Pump;3;EXPLORE;2
+TRE-174;Synthetic Grass;3;NO ACTION;3
+TRE-175;AI Home Security;3;EXPLORE;2
+TRE-177;Smart Locks;3;EXPLORE;2
+TRE-178;Smart Doorbell;3;EXPLORE;2
+TRE-179;Geofencing;0;EXPLORE;2
+TRE-180;Internet of Things;3;EXPLORE;2
+TRE-181;Smart kitchen table;3;EXPLORE;2
+TRE-182;Robot Chef;3;EXPLORE;2
+TRE-183;Smart Toilet;3;EXPLORE;2
+TRE-184;Solar Tiles;3;EXPLORE;2
+TRE-185;Smart Glass Windows;3;NO ACTION;3
+TRE-186;Fractional ownership;1;EXPLORE;2
+TRE-187;Co-living homes;3;EXPLORE;2
+TRE-188;Real Estate Blockchain;1;EXPLORE;2
+TRE-189;Rent-to-Own;1;EXPLORE;2
+TRE-190;15 minute City;3;EXPLORE;2
+TRE-194;On-demand Home Services;3;ACT NOW;0
+TRE-195;AI for Cancer Detection;2;EXPLORE;2
+TRE-197;mRNA vaccines;2;NO ACTION;3
+TRE-199;CRISPR;2;NO ACTION;3
+TRE-200;Sleep Tech;2;EXPLORE;2
+TRE-202;Big Tech In Pharma;2;NO ACTION;3
+TRE-203;Health professionals platforms;2;NO ACTION;3
+TRE-204;Tissue Engineering;2;NO ACTION;3
+TRE-205;Allogeneic Cell Therapies;2;NO ACTION;3
+TRE-206;Gene editing in human embryos;2;NO ACTION;3
+TRE-207;Metabolic Health Devices;2;EXPLORE;2
+TRE-208;Early detection of Alzheimer's disease;2;EXPLORE;2
+TRE-209;Personalized Maternity Care;2;EXPLORE;2
+TRE-210;Biological Age Test;2;EXPLORE;2
+TRE-211;Ketone-based therapies;2;NO ACTION;3
+TRE-213;Fall detection and emergency call devices;2;EXPLORE;2
+TRE-214;Healthcare drone deliveries;2;NO ACTION;3
+TRE-216;Peer to Peer insurance;1;EXPLORE;2
+TRE-218;Virtual-first care;2;EXPLORE;2
+TRE-221;Virtual Reality;3;EXPLORE;2
+TRE-222;Prediction Market;1;EXPLORE;2
+TRE-223;Cybersecurity;1;EXPLORE;2
+TRE-224;Embedded Insurance;1;EXPLORE;2
+TRE-225;On-demand healthcare;2;VALIDATE;1
+TRE-226;IoT, Telematics & Wearables;2;EXPLORE;2
+TRE-227;Artificial Intelligence;1;EXPLORE;2
+TRE-228;Caregiving Technologies;2;EXPLORE;2
+TRE-229;Conversational Tools;3;EXPLORE;2
+TRE-230;Insurance and Web3;1;EXPLORE;2
+TRE-231;Decentralized Clinical trials;2;EXPLORE;2
+TRE-232;Menopause tech;2;EXPLORE;2
+TRE-238;Remote patient monitoring;2;EXPLORE;2
+TRE-240;Emerging mobility ecosystem;0;EXPLORE;2
+TRE-241;Parametric Insurance;1;EXPLORE;2
+TRE-242;Active Ageing;2;EXPLORE;2
+TRE-243;Anti-aging Treatments;2;NO ACTION;3
+TRE-244;Behavior monitoring devices;2;EXPLORE;2
+TRE-245;House adaptation;3;EXPLORE;2
+TRE-246;Marketplaces for seniors;2;VALIDATE;1
+TRE-247;Multigenerational Homes;3;EXPLORE;2
+TRE-248;Digital Solutions In Cancer Care;2;EXPLORE;2
+TRE-249;Improve the fertility journey;2;EXPLORE;2
+TRE-251;Digital breast cancer diagnostic tools;2;EXPLORE;2
+TRE-255;Retail Finance;1;EXPLORE;2
+TRE-256;Eco Banking;1;EXPLORE;2
+TRE-257;Metaverse Medicine;2;NO ACTION;3
+TRE-259;Metaverse Hospital;2;NO ACTION;3
+TRE-260;AI Health Worker;2;EXPLORE;2
+TRE-263;EEG Devices;2;EXPLORE;2
+TRE-264;Wellness industry growing;2;VALIDATE;1
+TRE-267;Lifelong learning;3;EXPLORE;2
+TRE-268;Adapted travel programs for Seniors;3;EXPLORE;2
+TRE-269;ChatGPT in healthcare;2;EXPLORE;2
+TRE-272;Digital Twins;0;EXPLORE;2
+TRE-275;Prescription apps;2;VALIDATE;1
+TRE-279;Rising rates catalyze product innovation;1;EXPLORE;2
+TRE-281;The metaverse demystifies;3;VALIDATE;1
+TRE-283;Fintechs: from disruptors to enablers;1;EXPLORE;2
+TRE-285;Minimobility;0;EXPLORE;2
+TRE-286;Digital Banking;1;NO ACTION;3
+TRE-287;Fintech for Small Businesses;1;EXPLORE;2
+TRE-288;Robo-Advisors;1;EXPLORE;2
+TRE-289;Alternative Lending;1;EXPLORE;2
+TRE-290;Personal Finance Management;1;EXPLORE;2
+TRE-291;Impact Investing;1;EXPLORE;2
+TRE-292;Open Banking;1;EXPLORE;2
+TRE-294;Cloud-native systems;1;EXPLORE;2
+TRE-295;Asynchronous direct-to-consumer telehealth;2;EXPLORE;2
+TRE-296;Flexible batteries;0;EXPLORE;2
+TRE-297;Metaverse for mental health;2;EXPLORE;2
+TRE-298;Flexible neural electronics;2;EXPLORE;2
+TRE-299;In-Womb Treatment;2;NO ACTION;3
+TRE-300;Health at the Workplace;2;VALIDATE;1
+TRE-301;Direct-to-Consumer (DTC) Healthcare Models;2;VALIDATE;1
+TRE-302;Emerging Wearables;2;VALIDATE;1
+TRE-303;Environmental Impact in Health;2;EXPLORE;2
+TRE-304;Molecular Diagnostics;2;NO ACTION;3
+TRE-305;Biosensor and Chip Diagnostics;2;EXPLORE;2
+TRE-306;AR/VR Therapeutics;2;NO ACTION;3
+TRE-307;Brain-Computer Interfaces (BCIs) and Neuroprosthetics;2;EXPLORE;2
+TRE-309;Microbiome-Based Therapies;2;EXPLORE;2
+TRE-310;Personalized Nutrition;2;EXPLORE;2
+TRE-311;Voice-Activated Health Assistants;2;NO ACTION;3
+TRE-312;Mental Health Chatbots;2;NO ACTION;3

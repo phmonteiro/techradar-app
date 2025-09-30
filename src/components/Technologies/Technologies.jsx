@@ -26,7 +26,7 @@ const Technologies = () => {
   // Function to handle viewing a technology
   const handleViewTechnology = (tech) => {
     // Navigate to the tech details page
-    navigate(`/technologies/${tech.Label}`); // Changed from history.push to navigate
+    navigate(`/technologies/${tech.GeneratedID}`); // Changed from history.push to navigate
   };
 
   // Filter technologies based on filter input

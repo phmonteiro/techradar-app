@@ -142,7 +142,7 @@ const TechDetails = ({ technology }) => {
             </div>
           </div>
 
-          <CommentsSection label={label} type="technology" />
+          <CommentsSection generatedId={label} type="technology" />
 
         </>
       )}

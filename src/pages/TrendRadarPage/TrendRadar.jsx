@@ -38,10 +38,10 @@ const HomePage = () => {
               { name: "Home & Lifestyle" }, // 3
             ],
             rings: [
-              { name: "ADOPT", color: "#5ba300" },
-              { name: "TRIAL", color: "#009eb0" },
-              { name: "ASSESS", color: "#c7ba00" },
-              { name: "HOLD", color: "#e09b96" },
+              { name: "ACT NOW", color: "#5ba300" }, // 0
+              { name: "VALIDATE", color: "#009eb0" }, // 1
+              { name: "EXPLORE", color: "#c7ba00" }, // 2
+              { name: "NO ACTION", color: "#e09b96" }, // 3
             ],
             entries: config.entries,
           });

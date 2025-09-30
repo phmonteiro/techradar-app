@@ -27,21 +27,24 @@ const HomePage = () => {
         await loadScript("/radar.js"); // Load radar.js from public folder
 
         if (window.radar_visualization) {
+          console.log('Calling radar_visualization with config:', config);
+          console.log('Entries being passed:', config.entries);
+          
           window.radar_visualization({
             repo_url: "https://github.com/zalando/tech-radar",
             title: "Fidelidade Tech Radar",
             date: config.date,
             quadrants: [
-              { name: "Health" }, // 0  
-              { name: "Insurance" }, // 1
-              { name: "Architecture" }, // 2
-              { name: "Software Development" }, // 3
+              { name: "Operate & Automate" }, // 0  
+              { name: "Build & Connect" }, // 1
+              { name: "Scale & Monetize" }, // 2
+              { name: "Inspire & Understand" }, // 3
             ],
             rings: [
-              { name: "ADOPT", color: "#5ba300" },
-              { name: "TRIAL", color: "#009eb0" },
-              { name: "ASSESS", color: "#c7ba00" },
-              { name: "HOLD", color: "#e09b96" },
+              { name: "ADOPT", color: "#5ba300" }, // 0
+              { name: "TRIAL", color: "#009eb0" }, // 1
+              { name: "INVESTIGATE", color: "#c7ba00" }, // 2
+              { name: "WATCH", color: "#e09b96" }, // 3
             ],
             entries: config.entries,
           });

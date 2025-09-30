@@ -10,7 +10,7 @@ import LikeButton from './LikeButton/LikeButton';
 import ContactAdminModal from './ContactAdminModal/ContactAdminModal.jsx';
 
 const TechnologyView = () => {
-  const { label } = useParams();
+  const { generatedId } = useParams();
   const { currentUser, hasRole } = useAuth();
   const [technology, setTechnology] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -20,9 +20,9 @@ const TechnologyView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the technology details using the label
+    // Fetch the technology details using the generatedId
     setIsLoading(true);
-    axios.get(`${import.meta.env.VITE_API_URL}/api/technologies/${label}`,
+    axios.get(`${import.meta.env.VITE_API_URL}/api/technologies/${generatedId}`,
       {
         headers: {Authorization: `Bearer ${token}` }
       }
@@ -38,12 +38,12 @@ const TechnologyView = () => {
         console.error("Error fetching technology details", error);
         setIsLoading(false);
       });
-  }, [label]);
+  }, [generatedId]);
 
-  const handleUpdateStage = async (technologyLabel, newStage) => {
+  const handleUpdateStage = async (technologyGeneratedId, newStage) => {
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/technologies/${technologyLabel}/stage`,
+        `${import.meta.env.VITE_API_URL}/api/technologies/${technologyGeneratedId}/stage`,
         { stage: newStage },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -68,7 +68,7 @@ const TechnologyView = () => {
 
   const handleEditTehnology = () => {
     // Redirect to the edit technology page
-    navigate(`/admin/technologies/edit/${technology.Label}`);
+    navigate(`/admin/technologies/edit/${technology.GeneratedID}`);
   }
 
   const handleContactAdmin = () => {
@@ -124,7 +124,7 @@ const TechnologyView = () => {
         <ProgressTrack 
           currentStage={technology.Stage} 
           isAdmin={currentUser && currentUser.role === 'Admin'} 
-          technologyLabel={technology.Label}
+          technologyLabel={technology.GeneratedID}
           onStageUpdate={handleUpdateStage}
         />
         <TechDetails technology={technology} />
@@ -133,7 +133,7 @@ const TechnologyView = () => {
       <ContactAdminModal
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
-        technologyLabel={technology?.Label}
+        technologyLabel={technology?.GeneratedID}
       />
     </>
   );

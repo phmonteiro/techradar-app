@@ -1,0 +1,63 @@
+TechnologyName;Quadrant;RecommendedAction;Ring
+Agile Architecture;0;Investigate;2
+AI Augmented Software Engineering;0;Investigate;2
+Application Composition Platform;1;Investigate;2
+Artificial General Intelligence;3;Watch;3
+Augmented FinOps;0;Watch;3
+Autonomous Agents;0;Watch;3
+Autonomous Vehicles;3;Watch;3
+Blockchain Platforms;1;Watch;3
+Citizen Data Science;3;Investigate;2
+CloudOps;0;Investigate;2
+Connected Car Platforms;1;Watch;3
+Data Mesh;1;Trial;1
+Decentralized Applications;2;Watch;3
+Decentralized Autonomous Organization;2;Watch;3
+Decentralized Identity;1;Watch;3
+DeFi;2;Watch;3
+Digital Humans;3;Watch;3
+Digital Twins;3;Investigate;2
+Digitally Engineered Underwriting;2;Investigate;2
+Driver Monitoring Systems;3;Investigate;2
+Enterprise Conversational AI Platforms;1;Investigate;2
+Epidermal Electronics;3;Watch;3
+Event-Driven Architecture;1;Investigate;2
+Experiential Wayfinding;3;Trial;1
+FIDO;1;Investigate;2
+Fusion Teams;0;Investigate;2
+Generative AI;3;Trial;1
+Genomics & Epigenetics;3;Watch;3
+Hyperautomation;0;Investigate;2
+Identity Wallets;2;Investigate;2
+Indoor Location Intelligence;3;Trial;1
+Innovation Hubs;3;Trial;1
+Insurance Wallets;2;Watch;3
+Internet of Things;1;Trial;1
+ISO 56000;0;Investigate;2
+Lakehouse;1;Trial;1
+Ledger DBMS;1;Watch;3
+MASA;1;Investigate;2
+Metaverse;3;Trial;1
+Microservices;1;Investigate;2
+Mixed Reality;3;Trial;1
+MLOps;0;Watch;3
+Multi-modal AI;3;Investigate;2
+Named Data Networking;3;Watch;3
+Non-Fungible Tokens;2;Investigate;2
+Ontologies and Knowledge Graphs;3;Watch;3
+Peer-to-Peer Insurance Business Models;2;Investigate;2
+Quantum Computing;3;Watch;3
+Retail CBDC;2;Watch;3
+SDI- Software Defined Infrastructure;0;Investigate;2
+Serverless Infrastructure;1;Investigate;2
+Smart Badges;1;Trial;1
+Smart City Framework;1;Investigate;2
+Smart Contracts;2;Investigate;2
+SOAR;0;Investigate;2
+SuperApps;2;Investigate;2
+Sustainability of Software;0;Investigate;2
+Synthetic Data;3;Watch;3
+Vector Databases;1;Investigate;2
+Virtual Assistants;3;Adopt;0
+Web3;2;Investigate;2
+WebAssembly;1;Investigate;2
