@@ -11,6 +11,8 @@ export const getTechnologyRadarConfig = () => {
       try {
         setLoading(true);
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/technology-radar-config`);
+        console.log('Frontend received config:', response.data);
+        console.log('Number of entries:', response.data.entries?.length);
         setConfig(response.data);
         setError(null);
       } catch (err) {

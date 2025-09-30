@@ -47,9 +47,10 @@ const AdminDashboard = () => {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
+        const count = typeof response.data?.count === 'number' ? response.data.count : 0;
         setStats(prev => ({
           ...prev,
-          comments: { count: response.data.data, loading: false, error: false }
+          comments: { count, loading: false, error: false }
         }));
       })
       .catch(error => {
@@ -65,9 +66,10 @@ const AdminDashboard = () => {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
+        const count = typeof response.data?.count === 'number' ? response.data.count : 0;
         setStats(prev => ({
           ...prev,
-          references: { count: response.data.data, loading: false, error: false }
+          references: { count, loading: false, error: false }
         }));
       })
       .catch(error => {

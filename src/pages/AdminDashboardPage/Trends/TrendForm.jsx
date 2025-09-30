@@ -7,8 +7,8 @@ import '../styles/index.css';
 import './TrendForm.css'; // Add specific styles
 
 const TrendForm = () => {
-  const { label } = useParams();
-  const isEditing = !!label;
+  const { generatedId } = useParams();
+  const isEditing = !!generatedId;
   const navigate = useNavigate();
   
   const [loading, setLoading] = useState(isEditing);
@@ -16,7 +16,7 @@ const TrendForm = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
-    Label: '',
+    GeneratedID: '',
     Name: '',
     Abstract: '',
     Stage: '',
@@ -47,7 +47,7 @@ const TrendForm = () => {
           }
           
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/admin/trends/${label}`,
+            `${import.meta.env.VITE_API_URL}/api/admin/trends/${generatedId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`
@@ -59,12 +59,12 @@ const TrendForm = () => {
           const trend = response.data.data
           
           if (!trend) {
-            setError('Label not found');
+            setError('GeneratedID not found');
             setLoading(false);
             return;
           }
-          if (!trend.Label) {
-            setError('Label is required');
+          if (!trend.GeneratedID) {
+            setError('GeneratedID is required');
             setLoading(false);
             return;
           }
@@ -92,7 +92,7 @@ const TrendForm = () => {
       
       fetchTrend();
     }
-  }, [label, isEditing, navigate]);
+  }, [generatedId, isEditing, navigate]);
   
   // Handle input changes
   const handleChange = (e) => {
@@ -123,10 +123,10 @@ const TrendForm = () => {
       errors.Name = 'Name is required';
     }
     
-    if (!isEditing && !formData.Label.trim()) {
-      errors.Label = 'Label is required';
-    } else if (!isEditing && !/^[a-z0-9-]+$/.test(formData.Label)) {
-      errors.Label = 'Label should contain only lowercase letters, numbers, and hyphens';
+    if (!isEditing && !formData.GeneratedID.trim()) {
+      errors.GeneratedID = 'GeneratedID is required';
+    } else if (!isEditing && !/^[a-z0-9-]+$/.test(formData.GeneratedID)) {
+      errors.GeneratedID = 'GeneratedID should contain only lowercase letters, numbers, and hyphens';
     }
     
     // Add validation for URL format if ImageUrl is provided
@@ -170,7 +170,7 @@ const TrendForm = () => {
       if (isEditing) {
         // Update existing trend
         await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/admin/trends/${label}`,
+          `${import.meta.env.VITE_API_URL}/api/admin/trends/${generatedId}`,
           submissionData,
           {
             headers: {
@@ -235,7 +235,7 @@ const TrendForm = () => {
     <div className="admin-form-container">
       <div className="admin-page-header">
         <h2>{isEditing ? 'Edit Trend' : 'Create New Trend'}</h2>
-        <Link to={isEditing ? `/trends/${label}` : "/admin/trends"} className="back-button">
+        <Link to={isEditing ? `/trends/${generatedId}` : "/admin/trends"} className="back-button">
           <FontAwesomeIcon icon={faArrowLeft} /> Back to Trends
         </Link>
       </div>
@@ -265,23 +265,23 @@ const TrendForm = () => {
           
           {!isEditing && (
             <div className="form-group">
-              <label htmlFor="Label">Internal reference * (cannot be changed later)</label>
+              <label htmlFor="GeneratedID">Internal reference * (cannot be changed later)</label>
               <input
                 type="text"
-                id="Label"
-                name="Label"
-                value={formData.Label}
+                id="GeneratedID"
+                name="GeneratedID"
+                value={formData.GeneratedID}
                 onChange={handleChange}
                 required
                 placeholder="Unique identifier, e.g. 'ai'"
-                className={formErrors.Label ? 'input-error' : ''}
-                aria-describedby={formErrors.Label ? 'label-error' : 'label-hint'}
-                aria-invalid={!!formErrors.Label}
+                className={formErrors.GeneratedID ? 'input-error' : ''}
+                aria-describedby={formErrors.GeneratedID ? 'generatedid-error' : 'generatedid-hint'}
+                aria-invalid={!!formErrors.GeneratedID}
               />
-              {formErrors.Label ? (
-                <div className="error-text" id="label-error">{formErrors.Label}</div>
+              {formErrors.GeneratedID ? (
+                <div className="error-text" id="generatedid-error">{formErrors.GeneratedID}</div>
               ) : (
-                <div className="help-text" id="label-hint">
+                <div className="help-text" id="generatedid-hint">
                   Use lowercase letters, numbers, and hyphens only. This will be used in URLs.
                 </div>
               )}
@@ -290,11 +290,11 @@ const TrendForm = () => {
           
           {isEditing && (
             <div className="form-group">
-              <label htmlFor="Label">Label (read-only)</label>
+              <label htmlFor="GeneratedID">GeneratedID (read-only)</label>
               <input
                 type="text"
-                id="Label"
-                value={formData.Label}
+                id="GeneratedID"
+                value={formData.GeneratedID}
                 readOnly
                 disabled
                 className="readonly-input"

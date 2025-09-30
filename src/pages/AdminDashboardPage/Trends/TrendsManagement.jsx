@@ -54,7 +54,7 @@ const TrendsManagement = () => {
     return (
       trend.Id?.toString().toLowerCase().includes(searchTerm) ||
       trend.Name?.toLowerCase().includes(searchTerm) ||
-      trend.Label?.toLowerCase().includes(searchTerm) ||
+      trend.GeneratedID?.toLowerCase().includes(searchTerm) ||
       trend.Stage?.toLowerCase().includes(searchTerm) ||
       trend.TechnologySegment?.toLowerCase().includes(searchTerm) ||
       formattedDate.toLowerCase().includes(searchTerm)
@@ -113,7 +113,7 @@ const TrendsManagement = () => {
       const token = localStorage.getItem('authToken');
       
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/admin/trends/${trendToDelete.Label}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/trends/${trendToDelete.GeneratedID}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -168,7 +168,7 @@ const TrendsManagement = () => {
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Label</th>
+                  <th>GeneratedID</th>
                   <th>Stage</th>
                   <th>Technology Segment</th>
                   <th>Last Review Date</th>
@@ -178,10 +178,10 @@ const TrendsManagement = () => {
               <tbody>
                 {filteredTrends.length > 0 ? (
                   filteredTrends.map(trend => (
-                    <tr key={trend.Label}>
+                    <tr key={trend.GeneratedID}>
                       <td data-tooltip={trend.Id}>{trend.Id}</td>
                       <td data-tooltip={trend.Name}>{trend.Name}</td>
-                      <td data-tooltip={trend.Label}>{trend.Label}</td>
+                      <td data-tooltip={trend.GeneratedID}>{trend.GeneratedID}</td>
                       <td data-tooltip={trend.Stage}>{trend.Stage}</td>
                       <td data-tooltip={trend.TechnologySegment}>{trend.TechnologySegment}</td>
                       <td data-tooltip={formatDate(trend.LastReviewDate)}>
@@ -189,7 +189,7 @@ const TrendsManagement = () => {
                       </td>
                       <td className="actions-cell">
                         <Link 
-                          to={`/admin/trends/edit/${trend.Label}`}
+                          to={`/admin/trends/edit/${trend.GeneratedID}`}
                           className="edit-button"
                         >
                           <FontAwesomeIcon icon={faEdit} />

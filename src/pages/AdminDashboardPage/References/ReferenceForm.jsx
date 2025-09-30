@@ -7,12 +7,12 @@ import '../styles/index.css';
 
 const FORM_MODES = {
   EDIT: 'edit',        // When id is present
-  ADD_TO_ITEM: 'add',  // When type and label are present
+  ADD_TO_ITEM: 'add',  // When type and generatedId are present
   CREATE_NEW: 'new'    // When nothing is present
 };
 
 const ReferenceForm = () => {
-  const { id, type, label } = useParams();
+  const { id, type, generatedId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState(type || '');
@@ -156,7 +156,7 @@ const ReferenceForm = () => {
 
         case FORM_MODES.ADD_TO_ITEM:
           await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/admin/references/add/${type}/${label}`,
+            `${import.meta.env.VITE_API_URL}/api/admin/references/add/${type}/${generatedId}`,
             requestData,
             { headers: { Authorization: `Bearer ${token}` }}
           );
@@ -268,13 +268,13 @@ const ReferenceForm = () => {
               <option value="">{selectedType ? 'Select a '+selectedType : 'No type selected!'}</option>
               {selectedType == 'trend' ? (
                 trends?.length > 0 && trends?.map(trend => (
-                  <option key={trend.Label} value={trend.Label}>
+                  <option key={trend.GeneratedID} value={trend.GeneratedID}>
                     {trend.Name}
                   </option>
                 ))
               ) : (
                 technologies?.length > 0 && technologies?.map(tech => (
-                  <option key={tech.Label} value={tech.Label}>
+                  <option key={tech.GeneratedID} value={tech.GeneratedID}>
                     {tech.Name}
                   </option>
                 ))

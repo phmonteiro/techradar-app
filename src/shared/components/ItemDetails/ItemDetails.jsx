@@ -22,26 +22,14 @@ const ItemDetails = ({ item, itemType }) => {
   };
 
   useEffect(() => {
-    if (generatedId && item?.GeneratedID) {
+    if (generatedId) {
       // Fetch references for the item if generatedId is available
       fetch(`${import.meta.env.VITE_API_URL}/api/references/${itemType}/${item.GeneratedID}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          // Handle both successful responses with empty arrays and data arrays
-          setReferences(data?.data || []);
-        })
-        .catch(error => {
-          console.error("Error fetching references:", error);
-          // Set empty array on error to prevent UI issues
-          setReferences([]);
-        });
+        .then(response => response.json())
+        .then(data => setReferences(data.data))
+        .catch(error => console.error("Error fetching references:", error));
     }
-  }, [generatedId, item?.GeneratedID, itemType]);
+  }, [generatedId, item.GeneratedID, itemType]);
 
   const isAdmin = hasRole && hasRole('Admin');
 
@@ -79,7 +67,7 @@ const ItemDetails = ({ item, itemType }) => {
           className={activeTab === "references" ? "tab active" : "tab"} 
           onClick={() => setActiveTab("references")}
         >
-          References ({references?.length || 0})
+          References ({references.length})
         </button>
         <button 
           className={activeTab === "comments" ? "tab active" : "tab"} 
@@ -155,10 +143,10 @@ const ItemDetails = ({ item, itemType }) => {
               )}
             </div>
             
-            {references && references.length > 0 ? (
+            {references.length > 0 ? (
               <div className="references-list">
                 {references.map((reference, index) => (
-                  <div key={reference?.Id || index} className="reference-item">
+                  <div key={index} className="reference-item">
                     <h4>
                       <a 
                         href={formatUrl(reference.Url)} 

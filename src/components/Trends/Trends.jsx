@@ -28,7 +28,7 @@ const Trends = () => {
     console.log("trend");
     console.log(trend);
     // Navigate to the tech details page
-    navigate(`/trends/${trend.Label}`); // Changed from history.push to navigate
+    navigate(`/trends/${trend.GeneratedID}`); // Changed from history.push to navigate
   };
 
   // Filter trends based on filter input
