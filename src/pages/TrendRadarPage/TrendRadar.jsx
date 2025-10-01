@@ -31,6 +31,8 @@ const HomePage = () => {
             repo_url: "https://github.com/zalando/tech-radar",
             title: "Fidelidade Trend Radar",
             date: config.date,
+            html_legend: true,
+            html_legend_mode: 'sided',
             quadrants: [
               { name: "Mobility" }, // 0
               { name: "Financial Services" }, // 1

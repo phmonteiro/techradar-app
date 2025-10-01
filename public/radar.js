@@ -32,6 +32,12 @@ function radar_visualization(config) {
       inactive: "#ddd"
     };
   config.print_layout = ("print_layout" in config) ? config.print_layout : true;
+  // New option: render legend outside SVG as HTML to prevent overlap
+  config.html_legend = ("html_legend" in config) ? config.html_legend : true;
+  // Max height per quadrant column before scrolling (only for html legend)
+  config.html_legend_max_height = config.html_legend_max_height || 480;
+  // Optional mode: place each quadrant legend beside its quadrant (left/right stacked)
+  config.html_legend_mode = config.html_legend_mode || 'grid'; // 'grid' | 'sided'
   config.links_in_new_tabs = ("links_in_new_tabs" in config) ? config.links_in_new_tabs : true;
   config.repo_url = config.repo_url || '#';
   config.print_ring_descriptions_table = ("print_ring_descriptions_table" in config) ? config.print_ring_descriptions_table : false;
@@ -43,8 +49,17 @@ function radar_visualization(config) {
   ]
   config.title_offset = config.title_offset || { x: -675, y: -420 };
   config.footer_offset = config.footer_offset || { x: -155, y: 450 };
-  config.legend_column_width = config.legend_column_width || 140
-  config.legend_line_height = config.legend_line_height || 10
+  config.legend_column_width = config.legend_column_width || 180;
+  config.legend_line_height = config.legend_line_height || 12
+
+  // In sided legend mode, optionally reduce radar width/height symmetrically so panels on both sides are closer
+  if (config.html_legend && config.html_legend_mode === 'sided' && !config._sided_compact_applied) {
+    const sidedWidth = config.sided_width || 820; // original was 1450; narrower brings panels closer from both sides
+    const sidedHeight = config.sided_height || config.height; // keep height unless overridden
+    config.width = sidedWidth;
+    config.height = sidedHeight;
+    config._sided_compact_applied = true; // prevent repeated shrinking on re-renders
+  }
 
   // custom random number generator, to make random sequence reproducible
   // source: https://stackoverflow.com/questions/521295
@@ -209,7 +224,7 @@ function radar_visualization(config) {
   }
 
   // adjust with config.scale.
-  config.scale = config.scale || 1;
+  config.scale = config.scale || 1.2;
   var scaled_width = config.width * config.scale;
   var scaled_height = config.height * config.scale;
 
@@ -222,7 +237,13 @@ function radar_visualization(config) {
   if ("zoomed_quadrant" in config) {
     svg.attr("viewBox", viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr("transform", translate(scaled_width / 2, scaled_height / 2).concat(`scale(${config.scale})`));
+    // Center normally; allow optional fine-tune via sided_shift_x (default 0 for symmetry)
+    let baseX = scaled_width / 2;
+    if (config.html_legend && config.html_legend_mode === 'sided') {
+      const shift = (typeof config.sided_shift_x === 'number') ? config.sided_shift_x : 0;
+      baseX -= shift;
+    }
+    radar.attr("transform", translate(baseX, scaled_height / 2).concat(`scale(${config.scale})`));
   }
 
   var grid = radar.append("g");
@@ -295,7 +316,7 @@ function radar_visualization(config) {
   }
 
   // draw title and legend (only in print layout)
-  if (config.print_layout) {
+  if (config.print_layout && !config.html_legend) {
     // title
     radar.append("a")
       .attr("href", config.repo_url)
@@ -373,6 +394,258 @@ function radar_visualization(config) {
                 previousLegendHeight += d3.select(this).node().getBBox().height;
               });
       }
+    }
+  }
+
+  // HTML legend rendering (non-overlapping, responsive, scrollable)
+  if (config.print_layout && config.html_legend && config.html_legend_mode === 'grid') {
+    // Ensure a container exists next to the SVG
+    let host = document.querySelector('.tech-radar-container') || document.body;
+    let existing = document.getElementById('radar-html-legend');
+    if (existing) { existing.remove(); }
+    const legendWrapper = document.createElement('div');
+    legendWrapper.id = 'radar-html-legend';
+    legendWrapper.style.display = 'grid';
+    legendWrapper.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+    legendWrapper.style.gap = '32px';
+    legendWrapper.style.margin = '32px auto';
+    legendWrapper.style.maxWidth = '1800px';
+    legendWrapper.style.fontFamily = config.font_family;
+    legendWrapper.style.fontSize = '24px';
+    legendWrapper.style.lineHeight = '1.3';
+    legendWrapper.style.padding = '0 32px 48px';
+
+    function createRingGroup(ringName, color) {
+      const h = document.createElement('h5');
+      h.textContent = ringName;
+      h.style.margin = '8px 0 4px';
+      h.style.fontSize = '13px';
+      h.style.letterSpacing = '0.5px';
+      h.style.color = color;
+      h.style.fontWeight = '700';
+      return h;
+    }
+
+    for (let q = 0; q < 4; q++) {
+      const quadrantDiv = document.createElement('div');
+      quadrantDiv.className = 'legend-quadrant';
+      quadrantDiv.style.border = '1px solid #e2e2e2';
+      quadrantDiv.style.borderRadius = '12px';
+      quadrantDiv.style.padding = '16px 18px 20px';
+      quadrantDiv.style.background = '#fff';
+      quadrantDiv.style.boxShadow = '0 4px 12px -2px rgba(0,0,0,0.06)';
+      quadrantDiv.style.maxHeight = (config.html_legend_max_height + 120) + 'px';
+      quadrantDiv.style.overflow = 'hidden';
+      quadrantDiv.style.display = 'flex';
+      quadrantDiv.style.flexDirection = 'column';
+
+      const qTitle = document.createElement('h3');
+      qTitle.textContent = config.quadrants[q].name;
+      qTitle.style.margin = '0 0 4px';
+      qTitle.style.fontSize = '20px';
+      qTitle.style.lineHeight = '1.2';
+      qTitle.style.fontWeight = '700';
+      quadrantDiv.appendChild(qTitle);
+
+      const scrollArea = document.createElement('div');
+      scrollArea.style.overflowY = 'auto';
+      scrollArea.style.paddingRight = '6px';
+      scrollArea.style.maxHeight = config.html_legend_max_height + 'px';
+      scrollArea.style.scrollbarWidth = 'thin';
+
+      // Group by ring inside quadrant
+      for (let r = 0; r < 4; r++) {
+        const ringHeader = createRingGroup(config.rings[r].name, config.rings[r].color);
+        scrollArea.appendChild(ringHeader);
+
+        const list = document.createElement('ol');
+        list.style.margin = '0 0 8px 18px';
+        list.style.padding = '0';
+        list.style.listStyle = 'decimal';
+        list.style.columnGap = '24px';
+        list.style.breakInside = 'avoid';
+
+        // Sort entries as before (by name)
+        const entries = segmented[q][r].slice().sort((a,b)=> a.name.localeCompare(b.name));
+        entries.forEach(e => {
+          const li = document.createElement('li');
+          li.style.margin = '0 0 2px';
+          li.style.fontSize = '20px';
+          li.style.lineHeight = '1.25';
+          li.style.fontWeight = e.moved === 2 ? '600' : '400';
+          if (!e.active) { li.style.opacity = 0.55; }
+          const link = document.createElement('a');
+            link.textContent = e.id + '. ' + e.name;
+            link.style.textDecoration = 'underline';
+            link.style.cursor = 'pointer';
+            link.style.color = '#111';
+            link.onmouseenter = () => highlightLegendItem(e);
+            link.onmouseleave = () => unhighlightLegendItem(e);
+            if (e.link) {
+              link.href = e.link;
+              if (config.links_in_new_tabs) link.target = '_blank';
+            } else {
+              link.href = '#';
+            }
+          li.appendChild(link);
+          list.appendChild(li);
+        });
+        scrollArea.appendChild(list);
+      }
+
+      quadrantDiv.appendChild(scrollArea);
+      legendWrapper.appendChild(quadrantDiv);
+    }
+
+    host.appendChild(legendWrapper);
+  }
+
+  // SIDE LEGEND MODE (each quadrant list positioned beside its quadrant)
+  if (config.print_layout && config.html_legend && config.html_legend_mode === 'sided') {
+    const svgEl = document.getElementById(config.svg_id);
+    if (svgEl) {
+      // Reuse existing wrapper if already set up to avoid duplicated columns
+      let wrapper = document.querySelector('.radar-layout-wrapper');
+      if (!wrapper) {
+        // Use the immediate container of the svg as insertion reference
+        const originalContainer = svgEl.parentElement;
+        wrapper = document.createElement('div');
+        wrapper.className = 'radar-layout-wrapper';
+        wrapper.style.display = 'grid';
+  // Original layout: wider side columns and standard gap
+  wrapper.style.gridTemplateColumns = 'minmax(300px, 360px) auto minmax(300px, 360px)';
+  wrapper.style.alignItems = 'stretch';
+  wrapper.style.gap = '12px';
+        wrapper.style.width = '100%';
+  wrapper.style.maxWidth = '1900px';
+        wrapper.style.margin = '0 auto 40px';
+        // Create columns
+        const leftCol = document.createElement('div'); leftCol.className = 'radar-side-col left'; leftCol.style.display='flex'; leftCol.style.flexDirection='column'; leftCol.style.gap='12px';
+        const centerCol = document.createElement('div'); centerCol.className='radar-center'; centerCol.style.display='flex'; centerCol.style.justifyContent='center';
+        const rightCol = document.createElement('div'); rightCol.className = 'radar-side-col right'; rightCol.style.display='flex'; rightCol.style.flexDirection='column'; rightCol.style.gap='12px';
+        // Insert wrapper before original container then move svg
+        originalContainer.parentElement.insertBefore(wrapper, originalContainer);
+        centerCol.appendChild(svgEl);
+        wrapper.appendChild(leftCol);
+        wrapper.appendChild(centerCol);
+        wrapper.appendChild(rightCol);
+        // Remove the now-empty original container (optional)
+        if (originalContainer.children.length === 0) {
+          originalContainer.remove();
+        }
+        // Mark svg so we know setup happened
+        svgEl.dataset.sideLegendSetup = 'true';
+      }
+
+      const leftCol = wrapper.querySelector('.radar-side-col.left');
+      const rightCol = wrapper.querySelector('.radar-side-col.right');
+      // Clear old content each invocation (update scenario)
+      if (leftCol) leftCol.innerHTML = '';
+      if (rightCol) rightCol.innerHTML = '';
+
+      // Map quadrants to side/top-bottom panels (visual ordering: top then bottom for each side)
+      const quadrantPlacement = [
+        { quadrant: 1, side: 'left', position: 'top' },    // Upper Left
+        { quadrant: 2, side: 'left', position: 'bottom' }, // Lower Left
+        { quadrant: 0, side: 'right', position: 'top' },   // Upper Right
+        { quadrant: 3, side: 'right', position: 'bottom' } // Lower Right
+      ];
+
+      const halfHeight = (config.height * config.scale / 2) || 500; // original height reference
+
+      function createPanel(qIndex) {
+        const panel = document.createElement('div');
+        panel.className = 'quadrant-panel';
+        panel.style.flex = '1 1 0';
+        panel.style.minHeight = '0';
+        panel.style.display = 'flex';
+        panel.style.flexDirection = 'column';
+        panel.style.border = '1px solid #e1e5eb';
+        panel.style.borderRadius = '14px';
+        panel.style.background = '#fff';
+        panel.style.boxShadow = '0 4px 18px -4px rgba(0,0,0,0.08)';
+        panel.style.padding = '14px 16px 18px';
+        panel.style.maxHeight = (halfHeight - 12) + 'px';
+        panel.style.overflow = 'hidden';
+        panel.style.fontFamily = config.font_family;
+
+        const title = document.createElement('h3');
+        title.textContent = config.quadrants[qIndex].name;
+        title.style.margin = '0 0 4px';
+        title.style.fontSize = '20px';
+        title.style.lineHeight = '1.2';
+        title.style.fontWeight = '700';
+        panel.appendChild(title);
+
+        const scroll = document.createElement('div');
+        scroll.style.overflowY = 'auto';
+        scroll.style.paddingRight = '6px';
+        scroll.style.scrollbarWidth = 'thin';
+        scroll.style.flex = '1 1 auto';
+        panel.appendChild(scroll);
+
+        // Rings in order (0..3)
+        for (let r=0; r<4; r++) {
+          const ringHeader = document.createElement('h5');
+          ringHeader.textContent = config.rings[r].name;
+          ringHeader.style.margin = '10px 0 4px';
+          ringHeader.style.fontSize = '16px';
+          ringHeader.style.fontWeight = '700';
+          ringHeader.style.letterSpacing = '0.5px';
+          ringHeader.style.color = config.rings[r].color;
+          scroll.appendChild(ringHeader);
+
+            const list = document.createElement('ol');
+            list.style.margin = '0 0 8px 18px';
+            list.style.padding = '0';
+            list.style.listStyle = 'decimal';
+            list.style.fontSize = '16px';
+            list.style.lineHeight = '1.25';
+
+            const entries = segmented[qIndex][r].slice().sort((a,b)=> a.name.localeCompare(b.name));
+            entries.forEach(e => {
+              const li = document.createElement('li');
+              li.style.margin = '0 0 2px';
+              if (!e.active) li.style.opacity = 0.55;
+              const link = document.createElement('a');
+              link.textContent = e.id + '. ' + e.name;
+              link.style.textDecoration = 'underline';
+              link.style.cursor = 'pointer';
+              link.style.color = '#111';
+              if (e.link) { link.href = e.link; if (config.links_in_new_tabs) link.target='_blank'; } else { link.href='#'; }
+              link.onmouseenter = () => {
+                const blipEl = document.getElementById('blip-' + e.id);
+                if (blipEl) {
+                  const shape = blipEl.querySelector('circle,path');
+                  if (shape) { shape.setAttribute('stroke', '#111'); shape.setAttribute('stroke-width','2'); }
+                  showBubble(e);
+                }
+              };
+              link.onmouseleave = () => {
+                const blipEl = document.getElementById('blip-' + e.id);
+                if (blipEl) {
+                  const shape = blipEl.querySelector('circle,path');
+                  if (shape) { shape.removeAttribute('stroke'); shape.removeAttribute('stroke-width'); }
+                  hideBubble(e);
+                }
+              };
+              li.appendChild(link);
+              list.appendChild(li);
+            });
+          scroll.appendChild(list);
+        }
+
+        return panel;
+      }
+
+      quadrantPlacement.forEach(qp => {
+        const panel = createPanel(qp.quadrant);
+        if (qp.side === 'left' && leftCol) {
+          leftCol.appendChild(panel);
+        } else if (rightCol) {
+          rightCol.appendChild(panel);
+        }
+      });
     }
   }
 
@@ -487,6 +760,7 @@ function radar_visualization(config) {
     .enter()
       .append("g")
         .attr("class", "blip")
+        .attr("id", function(d){ return 'blip-' + d.id; })
         .attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, config.legend_column_width, i); })
         .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
         .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
