@@ -3,7 +3,8 @@
 // Copyright (c) 2017-2024 Zalando SE
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
+// of this software and associated documentation files (the "Software"), to  // adjust with config.scale.
+  config.scale = config.scale || 0.75; // reduced from 0.85 to make radar more compacteal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
@@ -22,6 +23,45 @@
 
 
 function radar_visualization(config) {
+
+  // Add CSS for right-aligned legend titles and tooltip styling
+  if (!document.getElementById('radar-legend-styles')) {
+    const style = document.createElement('style');
+    style.id = 'radar-legend-styles';
+    style.textContent = `
+      .legend-title-right-aligned {
+        text-align: right !important;
+        direction: ltr !important;
+        width: 100% !important;
+        display: block !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+      }
+      .legend-title-left-aligned {
+        text-align: left !important;
+        direction: ltr !important;
+        width: 100% !important;
+        display: block !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+      }
+      #bubble {
+        z-index: 9999 !important;
+        pointer-events: none !important;
+      }
+      #bubble text {
+        font-size: 14px !important;
+        font-weight: bold !important;
+      }
+      #bubble rect {
+        z-index: 9998 !important;
+      }
+      #bubble path {
+        z-index: 9998 !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
   config.svg_id = config.svg || "radar";
   config.width = config.width || 1450;
@@ -54,7 +94,7 @@ function radar_visualization(config) {
 
   // In sided legend mode, optionally reduce radar width/height symmetrically so panels on both sides are closer
   if (config.html_legend && config.html_legend_mode === 'sided' && !config._sided_compact_applied) {
-    const sidedWidth = config.sided_width || 820; // original was 1450; narrower brings panels closer from both sides
+    const sidedWidth = config.sided_width || 800; // reduced from 1000 to bring radar closer to panels
     const sidedHeight = config.sided_height || config.height; // keep height unless overridden
     config.width = sidedWidth;
     config.height = sidedHeight;
@@ -224,7 +264,7 @@ function radar_visualization(config) {
   }
 
   // adjust with config.scale.
-  config.scale = config.scale || 1.2;
+  config.scale = config.scale || 0.85;
   var scaled_width = config.width * config.scale;
   var scaled_height = config.height * config.scale;
 
@@ -386,7 +426,7 @@ function radar_visualization(config) {
               .attr("id", function(d, i) { return "legendItem" + d.id; })
               .text(function(d) { return d.id + ". " + d.name; })
               .style("font-family", config.font_family)
-              .style("font-size", "11px")
+              .style("font-size", "8px")
               .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
               .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); })
               .call(wrap_text)
@@ -411,7 +451,7 @@ function radar_visualization(config) {
     legendWrapper.style.margin = '32px auto';
     legendWrapper.style.maxWidth = '1800px';
     legendWrapper.style.fontFamily = config.font_family;
-    legendWrapper.style.fontSize = '24px';
+    legendWrapper.style.fontSize = '10px';
     legendWrapper.style.lineHeight = '1.3';
     legendWrapper.style.padding = '0 32px 48px';
 
@@ -419,7 +459,7 @@ function radar_visualization(config) {
       const h = document.createElement('h5');
       h.textContent = ringName;
       h.style.margin = '8px 0 4px';
-      h.style.fontSize = '13px';
+      h.style.fontSize = '10px';
       h.style.letterSpacing = '0.5px';
       h.style.color = color;
       h.style.fontWeight = '700';
@@ -442,7 +482,7 @@ function radar_visualization(config) {
       const qTitle = document.createElement('h3');
       qTitle.textContent = config.quadrants[q].name;
       qTitle.style.margin = '0 0 4px';
-      qTitle.style.fontSize = '20px';
+      qTitle.style.fontSize = '10px';
       qTitle.style.lineHeight = '1.2';
       qTitle.style.fontWeight = '700';
       quadrantDiv.appendChild(qTitle);
@@ -462,7 +502,7 @@ function radar_visualization(config) {
         list.style.margin = '0 0 8px 18px';
         list.style.padding = '0';
         list.style.listStyle = 'decimal';
-        list.style.columnGap = '24px';
+        list.style.columnGap = '16px';
         list.style.breakInside = 'avoid';
 
         // Sort entries as before (by name)
@@ -470,7 +510,7 @@ function radar_visualization(config) {
         entries.forEach(e => {
           const li = document.createElement('li');
           li.style.margin = '0 0 2px';
-          li.style.fontSize = '20px';
+          li.style.fontSize = '5px';
           li.style.lineHeight = '1.25';
           li.style.fontWeight = e.moved === 2 ? '600' : '400';
           if (!e.active) { li.style.opacity = 0.55; }
@@ -512,17 +552,17 @@ function radar_visualization(config) {
         wrapper = document.createElement('div');
         wrapper.className = 'radar-layout-wrapper';
         wrapper.style.display = 'grid';
-  // Original layout: wider side columns and standard gap
-  wrapper.style.gridTemplateColumns = 'minmax(300px, 360px) auto minmax(300px, 360px)';
+  // Compact layout: narrower side columns and smaller gap to bring radar and panels closer
+  wrapper.style.gridTemplateColumns = 'minmax(280px, 320px) auto minmax(280px, 320px)';
   wrapper.style.alignItems = 'stretch';
-  wrapper.style.gap = '12px';
+  wrapper.style.gap = '6px';
         wrapper.style.width = '100%';
-  wrapper.style.maxWidth = '1900px';
+        wrapper.style.maxWidth = '1600px'; // reduced from 1900px for more compact layout
         wrapper.style.margin = '0 auto 40px';
         // Create columns
-        const leftCol = document.createElement('div'); leftCol.className = 'radar-side-col left'; leftCol.style.display='flex'; leftCol.style.flexDirection='column'; leftCol.style.gap='12px';
+        const leftCol = document.createElement('div'); leftCol.className = 'radar-side-col left'; leftCol.style.display='flex'; leftCol.style.flexDirection='column'; leftCol.style.gap='8px';
         const centerCol = document.createElement('div'); centerCol.className='radar-center'; centerCol.style.display='flex'; centerCol.style.justifyContent='center';
-        const rightCol = document.createElement('div'); rightCol.className = 'radar-side-col right'; rightCol.style.display='flex'; rightCol.style.flexDirection='column'; rightCol.style.gap='12px';
+        const rightCol = document.createElement('div'); rightCol.className = 'radar-side-col right'; rightCol.style.display='flex'; rightCol.style.flexDirection='column'; rightCol.style.gap='8px';
         // Insert wrapper before original container then move svg
         originalContainer.parentElement.insertBefore(wrapper, originalContainer);
         centerCol.appendChild(svgEl);
@@ -553,7 +593,7 @@ function radar_visualization(config) {
 
       const halfHeight = (config.height * config.scale / 2) || 500; // original height reference
 
-      function createPanel(qIndex) {
+      function createPanel(qIndex, side) {
         const panel = document.createElement('div');
         panel.className = 'quadrant-panel';
         panel.style.flex = '1 1 0';
@@ -564,17 +604,26 @@ function radar_visualization(config) {
         panel.style.borderRadius = '14px';
         panel.style.background = '#fff';
         panel.style.boxShadow = '0 4px 18px -4px rgba(0,0,0,0.08)';
-        panel.style.padding = '14px 16px 18px';
+        panel.style.padding = '2px 4px 4px'; // reduced padding for more compact layout
         panel.style.maxHeight = (halfHeight - 12) + 'px';
         panel.style.overflow = 'hidden';
         panel.style.fontFamily = config.font_family;
 
         const title = document.createElement('h3');
         title.textContent = config.quadrants[qIndex].name;
-        title.style.margin = '0 0 4px';
-        title.style.fontSize = '20px';
-        title.style.lineHeight = '1.2';
+        title.style.margin = '0 0 2px'; // reduced margin
+        title.style.fontSize = '14px'; // smaller font
+        title.style.lineHeight = '1.1';
         title.style.fontWeight = '700';
+        // Apply consistent styling to all panel titles
+        console.log(`Panel: ${config.quadrants[qIndex].name}, qIndex: ${qIndex}, side: ${side}`);
+        if (side === 'left') {
+          title.className = 'legend-title-right-aligned';
+          console.log(`Applied right alignment to: ${config.quadrants[qIndex].name}`);
+        } else {
+          title.className = 'legend-title-left-aligned';
+          console.log(`Applied left alignment to: ${config.quadrants[qIndex].name}`);
+        }
         panel.appendChild(title);
 
         const scroll = document.createElement('div');
@@ -588,24 +637,29 @@ function radar_visualization(config) {
         for (let r=0; r<4; r++) {
           const ringHeader = document.createElement('h5');
           ringHeader.textContent = config.rings[r].name;
-          ringHeader.style.margin = '10px 0 4px';
-          ringHeader.style.fontSize = '16px';
+          ringHeader.style.margin = '6px 0 2px'; // reduced margins
+          ringHeader.style.fontSize = '12px'; // smaller font
           ringHeader.style.fontWeight = '700';
-          ringHeader.style.letterSpacing = '0.5px';
+          ringHeader.style.letterSpacing = '0.3px';
           ringHeader.style.color = config.rings[r].color;
+          // Right-align ring headers for left side panels
+          if (side === 'left') {
+            ringHeader.style.textAlign = 'right';
+          }
           scroll.appendChild(ringHeader);
 
             const list = document.createElement('ol');
-            list.style.margin = '0 0 8px 18px';
+            list.style.margin = '0 0 4px 6px'; // reduced margins
             list.style.padding = '0';
             list.style.listStyle = 'decimal';
-            list.style.fontSize = '16px';
-            list.style.lineHeight = '1.25';
+            list.style.fontSize = '13px'; // smaller font
+            list.style.lineHeight = '1.55'; // tighter line height
 
             const entries = segmented[qIndex][r].slice().sort((a,b)=> a.name.localeCompare(b.name));
             entries.forEach(e => {
               const li = document.createElement('li');
-              li.style.margin = '0 0 2px';
+              li.style.margin = '0 0 1px'; // reduced bottom margin
+              li.style.padding = '0'; // ensure no extra padding
               if (!e.active) li.style.opacity = 0.55;
               const link = document.createElement('a');
               link.textContent = e.id + '. ' + e.name;
@@ -639,7 +693,7 @@ function radar_visualization(config) {
       }
 
       quadrantPlacement.forEach(qp => {
-        const panel = createPanel(qp.quadrant);
+        const panel = createPanel(qp.quadrant, qp.side);
         if (qp.side === 'left' && leftCol) {
           leftCol.appendChild(panel);
         } else if (rightCol) {
@@ -698,47 +752,38 @@ function radar_visualization(config) {
   var rink = radar.append("g")
     .attr("id", "rink");
 
-  // rollover bubble (on top of everything else)
-  var bubble = radar.append("g")
-    .attr("id", "bubble")
-    .attr("x", 0)
-    .attr("y", 0)
-    .style("opacity", 0)
-    .style("pointer-events", "none")
-    .style("user-select", "none");
-  bubble.append("rect")
-    .attr("rx", 4)
-    .attr("ry", 4)
-    .style("fill", "#333");
-  bubble.append("text")
-    .style("font-family", config.font_family)
-    .style("font-size", "10px")
-    .style("fill", "#fff");
-  bubble.append("path")
-    .attr("d", "M 0,0 10,0 5,8 z")
-    .style("fill", "#333");
+  // Bubble will be created at the end to ensure it appears on top
 
   function showBubble(d) {
     if (d.active || config.print_layout) {
-      var tooltip = d3.select("#bubble text")
+      var tooltip = d3.select("#radar-tooltip")
         .text(d.name);
-      var bbox = tooltip.node().getBBox();
-      d3.select("#bubble")
-        .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
-        .style("opacity", 0.8);
-      d3.select("#bubble rect")
-        .attr("x", -5)
-        .attr("y", -bbox.height)
-        .attr("width", bbox.width + 10)
-        .attr("height", bbox.height + 4);
-      d3.select("#bubble path")
-        .attr("transform", translate(bbox.width / 2 - 5, 3));
+      
+      // Get the SVG element's position on the page
+      var svgElement = d3.select("svg#" + config.svg_id).node();
+      var svgRect = svgElement.getBoundingClientRect();
+      
+      // Calculate the transformed coordinates
+      let baseX = scaled_width / 2;
+      if (config.html_legend && config.html_legend_mode === 'sided') {
+        const shift = (typeof config.sided_shift_x === 'number') ? config.sided_shift_x : 0;
+        baseX -= shift;
+      }
+      
+      let transformedX = baseX + (d.x * config.scale);
+      let transformedY = (scaled_height / 2) + (d.y * config.scale);
+      
+      // Position tooltip relative to page
+      tooltip
+        .style("left", (svgRect.left + transformedX) + "px")
+        .style("top", (svgRect.top + transformedY - 35) + "px")
+        .style("opacity", 0.9)
+        .style("transform", "translateX(-50%)"); // Center the tooltip horizontally
     }
   }
 
   function hideBubble(d) {
-    var bubble = d3.select("#bubble")
-      .attr("transform", translate(0,0))
+    d3.select("#radar-tooltip")
       .style("opacity", 0);
   }
 
@@ -877,4 +922,21 @@ function radar_visualization(config) {
   if (config.print_ring_descriptions_table) {
     ringDescriptionsTable();
   }
+
+  // Create HTML tooltip that floats above the SVG (guaranteed to appear on top)
+  var tooltip = d3.select("body").append("div")
+    .attr("id", "radar-tooltip")
+    .style("position", "absolute")
+    .style("background-color", "#333")
+    .style("color", "#fff")
+    .style("padding", "8px 12px")
+    .style("border-radius", "4px")
+    .style("font-family", config.font_family)
+    .style("font-size", "14px")
+    .style("font-weight", "bold")
+    .style("pointer-events", "none")
+    .style("opacity", 0)
+    .style("z-index", "10000")
+    .style("box-shadow", "0 2px 8px rgba(0,0,0,0.3)")
+    .style("white-space", "nowrap");
 }
