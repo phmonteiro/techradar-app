@@ -34,6 +34,8 @@ const HomePage = () => {
             repo_url: "https://github.com/zalando/tech-radar",
             title: "Fidelidade Tech Radar",
             date: config.date,
+            html_legend: true,
+            html_legend_mode: 'sided',
             quadrants: [
               { name: "Operate & Automate" }, // 0  
               { name: "Build & Connect" }, // 1
