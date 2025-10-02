@@ -427,8 +427,8 @@ function radar_visualization(config) {
               .text(function(d) { return d.id + ". " + d.name; })
               .style("font-family", config.font_family)
               .style("font-size", "8px")
-              .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-              .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); })
+              .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); highlightBlip(d); })
+              .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); unhighlightBlip(d); })
               .call(wrap_text)
               .each(function() {
                 previousLegendHeight += d3.select(this).node().getBBox().height;
@@ -519,8 +519,8 @@ function radar_visualization(config) {
             link.style.textDecoration = 'underline';
             link.style.cursor = 'pointer';
             link.style.color = '#111';
-            link.onmouseenter = () => highlightLegendItem(e);
-            link.onmouseleave = () => unhighlightLegendItem(e);
+            link.onmouseenter = () => { highlightLegendItem(e); highlightBlip(e); showBubble(e); };
+            link.onmouseleave = () => { unhighlightLegendItem(e); unhighlightBlip(e); hideBubble(e); };
             if (e.link) {
               link.href = e.link;
               if (config.links_in_new_tabs) link.target = '_blank';
@@ -583,12 +583,12 @@ function radar_visualization(config) {
       if (leftCol) leftCol.innerHTML = '';
       if (rightCol) rightCol.innerHTML = '';
 
-      // Map quadrants to side/top-bottom panels (visual ordering: top then bottom for each side)
+      // Map quadrants to side/top-bottom panels (visual ordering: inverted - bottom then top for each side)
       const quadrantPlacement = [
-        { quadrant: 1, side: 'left', position: 'top' },    // Upper Left
-        { quadrant: 2, side: 'left', position: 'bottom' }, // Lower Left
-        { quadrant: 0, side: 'right', position: 'top' },   // Upper Right
-        { quadrant: 3, side: 'right', position: 'bottom' } // Lower Right
+        { quadrant: 2, side: 'left', position: 'top' },     // Lower Left -> Top Left
+        { quadrant: 1, side: 'left', position: 'bottom' },  // Upper Left -> Bottom Left
+        { quadrant: 3, side: 'right', position: 'top' },    // Lower Right -> Top Right
+        { quadrant: 0, side: 'right', position: 'bottom' }  // Upper Right -> Bottom Right
       ];
 
       const halfHeight = (config.height * config.scale / 2) || 500; // original height reference
@@ -668,20 +668,14 @@ function radar_visualization(config) {
               link.style.color = '#111';
               if (e.link) { link.href = e.link; if (config.links_in_new_tabs) link.target='_blank'; } else { link.href='#'; }
               link.onmouseenter = () => {
-                const blipEl = document.getElementById('blip-' + e.id);
-                if (blipEl) {
-                  const shape = blipEl.querySelector('circle,path');
-                  if (shape) { shape.setAttribute('stroke', '#111'); shape.setAttribute('stroke-width','2'); }
-                  showBubble(e);
-                }
+                highlightLegendItem(e);
+                highlightBlip(e);
+                showBubble(e);
               };
               link.onmouseleave = () => {
-                const blipEl = document.getElementById('blip-' + e.id);
-                if (blipEl) {
-                  const shape = blipEl.querySelector('circle,path');
-                  if (shape) { shape.removeAttribute('stroke'); shape.removeAttribute('stroke-width'); }
-                  hideBubble(e);
-                }
+                unhighlightLegendItem(e);
+                unhighlightBlip(e);
+                hideBubble(e);
               };
               li.appendChild(link);
               list.appendChild(li);
@@ -759,26 +753,43 @@ function radar_visualization(config) {
       var tooltip = d3.select("#radar-tooltip")
         .text(d.name);
       
-      // Get the SVG element's position on the page
-      var svgElement = d3.select("svg#" + config.svg_id).node();
-      var svgRect = svgElement.getBoundingClientRect();
-      
-      // Calculate the transformed coordinates
-      let baseX = scaled_width / 2;
-      if (config.html_legend && config.html_legend_mode === 'sided') {
-        const shift = (typeof config.sided_shift_x === 'number') ? config.sided_shift_x : 0;
-        baseX -= shift;
+      // Get the actual blip element and its screen position
+      var blipElement = d3.select("#blip-" + d.id).node();
+      if (blipElement) {
+        var blipRect = blipElement.getBoundingClientRect();
+        
+        // Account for page scroll to position tooltip correctly
+        var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Position tooltip relative to the actual blip position on screen + scroll offset
+        tooltip
+          .style("left", (blipRect.left + scrollX + blipRect.width / 2) + "px")
+          .style("top", (blipRect.top + scrollY - 35) + "px")
+          .style("opacity", 0.9)
+          .style("transform", "translateX(-50%)"); // Center the tooltip horizontally
+      } else {
+        // Fallback to manual calculation if blip element not found
+        var svgElement = d3.select("svg#" + config.svg_id).node();
+        var svgRect = svgElement.getBoundingClientRect();
+        var scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        let baseX = scaled_width / 2;
+        if (config.html_legend && config.html_legend_mode === 'sided') {
+          const shift = (typeof config.sided_shift_x === 'number') ? config.sided_shift_x : 0;
+          baseX -= shift;
+        }
+        
+        let transformedX = baseX + (d.x * config.scale);
+        let transformedY = (scaled_height / 2) + (d.y * config.scale);
+        
+        tooltip
+          .style("left", (svgRect.left + scrollX + transformedX) + "px")
+          .style("top", (svgRect.top + scrollY + transformedY - 35) + "px")
+          .style("opacity", 0.9)
+          .style("transform", "translateX(-50%)");
       }
-      
-      let transformedX = baseX + (d.x * config.scale);
-      let transformedY = (scaled_height / 2) + (d.y * config.scale);
-      
-      // Position tooltip relative to page
-      tooltip
-        .style("left", (svgRect.left + transformedX) + "px")
-        .style("top", (svgRect.top + transformedY - 35) + "px")
-        .style("opacity", 0.9)
-        .style("transform", "translateX(-50%)"); // Center the tooltip horizontally
     }
   }
 
@@ -789,14 +800,82 @@ function radar_visualization(config) {
 
   function highlightLegendItem(d) {
     var legendItem = document.getElementById("legendItem" + d.id);
-    legendItem.setAttribute("filter", "url(#solid)");
-    legendItem.setAttribute("fill", "white");
+    if (legendItem) {
+      legendItem.setAttribute("filter", "url(#solid)");
+      legendItem.setAttribute("fill", "white");
+    }
   }
 
   function unhighlightLegendItem(d) {
     var legendItem = document.getElementById("legendItem" + d.id);
-    legendItem.removeAttribute("filter");
-    legendItem.removeAttribute("fill");
+    if (legendItem) {
+      legendItem.removeAttribute("filter");
+      legendItem.removeAttribute("fill");
+    }
+  }
+
+  function highlightBlip(d) {
+    var blipElement = d3.select("#blip-" + d.id);
+    var shape = blipElement.select("circle, path");
+    
+    if (!shape.empty()) {
+      // Check if already highlighted to prevent re-highlighting
+      if (shape.attr("data-highlighted") === "true") return;
+      
+      // Store original values only if not already stored
+      var originalR = shape.attr("data-original-r") || shape.attr("r");
+      var originalTransform = shape.attr("data-original-transform") || shape.attr("transform");
+      
+      // Enhanced visual feedback
+      shape
+        .attr("data-original-r", originalR)
+        .attr("data-original-transform", originalTransform || "")
+        .attr("data-highlighted", "true")
+        .style("stroke", "#fff")
+        .style("stroke-width", "3px")
+        .style("filter", "drop-shadow(0 0 8px rgba(0,0,0,0.4))")
+        .transition()
+        .duration(150)
+        .attr("r", function() {
+          // Increase size for circles
+          if (this.tagName === "circle") {
+            var r = parseFloat(originalR);
+            return r ? r * 1.3 : originalR;
+          }
+          return null;
+        })
+        .attr("transform", function() {
+          // Scale up paths (triangles, stars)
+          if (this.tagName === "path") {
+            var baseTransform = originalTransform || "";
+            return baseTransform + " scale(1.3)";
+          }
+          return originalTransform || "";
+        });
+    }
+  }
+
+  function unhighlightBlip(d) {
+    var blipElement = d3.select("#blip-" + d.id);
+    var shape = blipElement.select("circle, path");
+    
+    if (!shape.empty()) {
+      // Check if actually highlighted
+      if (shape.attr("data-highlighted") !== "true") return;
+      
+      var originalR = shape.attr("data-original-r");
+      var originalTransform = shape.attr("data-original-transform");
+      
+      shape
+        .attr("data-highlighted", "false")
+        .style("stroke", null)
+        .style("stroke-width", null)
+        .style("filter", null)
+        .transition()
+        .duration(150)
+        .attr("r", originalR)
+        .attr("transform", originalTransform || "");
+    }
   }
 
   // draw blips on radar
@@ -806,9 +885,9 @@ function radar_visualization(config) {
       .append("g")
         .attr("class", "blip")
         .attr("id", function(d){ return 'blip-' + d.id; })
-        .attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, config.legend_column_width, i); })
-        .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-        .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
+        .attr("transform", function(d) { return translate(d.x, d.y); })
+        .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); highlightBlip(d); })
+        .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); unhighlightBlip(d); });
 
   // configure each blip
   blips.each(function(d) {
