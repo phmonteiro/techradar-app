@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AdminSidebar.css';
 
-const AdminSidebar = ({ username, onLogout }) => {
+const AdminSidebar = ({ userId, onLogout }) => {
   return (
     <div className="admin-sidebar">
       <div>
@@ -18,12 +18,10 @@ const AdminSidebar = ({ username, onLogout }) => {
       </nav>
       <p></p>
       <div className="user-info">
-          <span>Logged in as: {username}</span>
+          <span>Logged in as: {userId}</span>
           <button className="logout-button" onClick={onLogout}>Logout</button>
       </div>
-      </div>
-
- 
+    </div>
   );
 };
 

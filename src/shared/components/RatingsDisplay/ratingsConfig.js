@@ -79,28 +79,76 @@ export const createTechnologyRatings = (item) => {
 export const createTrendRatings = (item) => {
   if (!item) return [];
 
-  // Trends will have different rating fields - adjust these as needed
   return [
     {
-      key: 'trend-impact',
-      displayName: 'Trend Impact',
-      value: item.RatingTrendImpactValue || 0,
+      key: 'business-relevance-fidelidade',
+      displayName: 'Business Relevance for Fidelidade',
+      value: item.RatingBusinessRelevanceforFidelidadeValue || 0,
       maxValue: 5,
-      label: item.RatingTrendImpact || 'Not Rated',
-      category: 'impact',
+      label: item.RatingBusinessRelevanceforFidelidade || 'Not Rated',
+      category: 'relevance',
       scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
-      icon: '?'
+      icon: '🏢'
     },
     {
-      key: 'trend-certainty',
-      displayName: 'Trend Certainty',
-      value: item.RatingTrendCertaintyValue || 0,
+      key: 'disruptive-potential',
+      displayName: 'Disruptive Potential',
+      value: item.RatingDisruptivePotentialValue || 0,
       maxValue: 5,
-      label: item.RatingTrendCertainty || 'Not Rated',
+      label: item.RatingDisruptivePotential || 'Not Rated',
+      category: 'impact',
+      scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
+      icon: '💥'
+    },
+    {
+      key: 'internal-know-how',
+      displayName: 'Internal Know-How',
+      value: item.RatingInternalKnowHowValue || 0,
+      maxValue: 5,
+      label: item.RatingInternalKnowHow || 'Not Rated',
       category: 'scope',
       scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
-      icon: '?'
+      icon: '🧠'
     },
-    // Add more trend-specific ratings as needed
+    {
+      key: 'market-potential',
+      displayName: 'Market Potential',
+      value: item.RatingMarketPotentialValue || 0,
+      maxValue: 5,
+      label: item.RatingMarketPotential || 'Not Rated',
+      category: 'impact',
+      scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
+      icon: '📈'
+    },
+    {
+      key: 'need-for-action',
+      displayName: 'Need for Action',
+      value: item.RatingNeedforActionValue || 0,
+      maxValue: 5,
+      label: item.RatingNeedforAction || 'Not Rated',
+      category: 'urgency',
+      scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
+      icon: '⚡'
+    },
+    {
+      key: 'strategic-fit',
+      displayName: 'Strategic Fit',
+      value: item.RatingStrategicFitValue || 0,
+      maxValue: 5,
+      label: item.RatingStrategicFit || 'Not Rated',
+      category: 'strategy',
+      scaleLabels: ['None', 'Very Low', 'Low', 'Medium', 'High', 'Very High'],
+      icon: '🎯'
+    },
+    {
+      key: 'time-to-market-impact',
+      displayName: 'Time to Market Impact',
+      value: item.RatingTimetoMarketImpactValue || 0,
+      maxValue: 5,
+      label: item.RatingTimetoMarketImpact || 'Not Rated',
+      category: 'time',
+      scaleLabels: ['0–2 years', '3–5 years', '6–10 years', '11–15 years', '15+ years'],
+      icon: '⏰'
+    }
   ].filter(rating => rating.value !== undefined && rating.value !== null);
 };

@@ -27,7 +27,7 @@ const Navbar = () => {
       )}
       {currentUser && (
         <span className="user-role-debug">
-          {currentUser.username} ({currentUser.role})
+          {currentUser.userId} ({currentUser.role})
         </span>
       )}
     </div>

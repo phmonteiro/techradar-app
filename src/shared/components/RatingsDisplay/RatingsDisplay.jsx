@@ -1,30 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import RatingModal from '../RatingModal/RatingModal';
 import './RatingsDisplay.css';
 
-const RatingsDisplay = ({ ratings, title = "Rating" }) => {
-  if (!ratings || ratings.length === 0) {
-    return null;
-  }
+const RatingsDisplay = ({ ratings, title = "Rating", itemType, generatedId, onRatingsUpdated }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  console.log('RatingsDisplay rendered with props:', { itemType, generatedId, ratingsLength: ratings?.length });
+
+  const handleRatingsUpdated = () => {
+    if (onRatingsUpdated) {
+      onRatingsUpdated();
+    }
+  };
 
   const renderProgressBar = (rating) => {
     const { value, maxValue, label, icon } = rating;
     const percentage = maxValue > 0 ? (value / maxValue) * 100 : 0;
     
+    // Handle both old static format and new API format
+    const scaleLabels = rating.scaleLabels || [];
+    const displayName = rating.displayName || rating.name || 'Rating';
+    
     return (
-      <div key={rating.key} className="rating-item">
+      <div key={rating.key || rating.id} className="rating-item">
         <div className="rating-header">
           <span className="rating-label">
-            {rating.displayName}:
+            {displayName}:
             {icon && <span className="rating-icon">{icon}</span>}
           </span>
           <div className="rating-count">
-            <span className="rating-participants">👤 1</span>
+            <span className="rating-participants">👤 {rating.ratingCount || 0}</span>
           </div>
         </div>
         
         <div className="rating-bar-container">
           <div className="rating-labels">
-            {rating.scaleLabels.map((scaleLabel, index) => (
+            {scaleLabels.map((scaleLabel, index) => (
               <span key={index} className="scale-label">
                 {scaleLabel}
               </span>
@@ -57,18 +68,64 @@ const RatingsDisplay = ({ ratings, title = "Rating" }) => {
     );
   };
 
+  const handleRateNowClick = () => {
+    console.log('Rate now button clicked!');
+    console.log('Props received:', { itemType, generatedId, onRatingsUpdated });
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    console.log('Closing modal');
+    setShowModal(false);
+  };
+
+  const handleRatingsUpdate = (updatedRatings) => {
+    console.log('Ratings updated:', updatedRatings);
+    if (onRatingsUpdated) {
+      onRatingsUpdated(updatedRatings);
+    }
+    setShowModal(false);
+  };
+
   return (
     <div className="ratings-display">
       <div className="ratings-header">
         <h3>{title}</h3>
-        <button className="rate-now-btn">
+        <button 
+          className="rate-now-btn"
+          onClick={handleRateNowClick}
+          style={{ 
+            backgroundColor: '#007acc',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px', 
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
           <span className="rate-icon">≡</span> Rate now
         </button>
       </div>
       
       <div className="ratings-list">
-        {ratings.map(renderProgressBar)}
+        {ratings && ratings.length > 0 ? (
+          ratings.map(renderProgressBar)
+        ) : (
+          <div className="no-ratings">
+            <p>Loading ratings...</p>
+          </div>
+        )}
       </div>
+
+      {showModal && (
+        <RatingModal
+          isOpen={showModal}
+          onClose={handleModalClose}
+          itemType={itemType}
+          generatedId={generatedId}
+          onRatingsUpdated={handleRatingsUpdate}
+        />
+      )}
     </div>
   );
 };

@@ -112,7 +112,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <AdminSidebar username={currentUser.username} /> {/* Sidebar component */}
+      <AdminSidebar userId={currentUser.userId} /> {/* Sidebar component */}
       <div className="admin-dashboard">
         <h2>Admin Dashboard</h2>
         <div className="dashboard-stats">
