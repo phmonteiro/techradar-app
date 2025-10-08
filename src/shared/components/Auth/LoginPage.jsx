@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ const LoginPage = () => {
     setError('');
     
     try {
-      const result = await login(username, password);
+      const result = await login(userId, password);
       
       if (result.success) {
         // Redirect based on user role
@@ -53,12 +53,12 @@ const LoginPage = () => {
       
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="userId">User ID</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="userId"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
             required
           />
         </div>

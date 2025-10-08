@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './CommentsSection.css';
 import axios from 'axios';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -16,15 +16,11 @@ const CommentsSection = ({ generatedId, type }) => {
   const { currentUser } = useAuth ? useAuth() : { currentUser: null };
   const authToken = localStorage.getItem('authToken');
 
-  // Debug logging
-  console.log('CommentsSection props:', { generatedId, type });
-
   const commentsPerPage = 6;
   const totalPages = Math.ceil(totalComments / commentsPerPage);
 
   
   const fetchComments = useCallback(async () => {
-    console.log('fetchComments called with:', { generatedId, type });
     
     if (!generatedId || !type) {
       console.error('Missing required props:', { generatedId, type });
@@ -38,17 +34,12 @@ const CommentsSection = ({ generatedId, type }) => {
       setError(null);
       
       const url = `${API_URL}/api/comments/${type}/${generatedId}?page=${currentPage}&limit=${commentsPerPage}`;
-      console.log('Fetching comments from URL:', url);
       
       const response = await axios.get(url, {
         headers: {
           'Authorization': `Bearer ${authToken}`
         }
       });
-      
-      console.log('API Response:', response.data);
-      console.log('Current Page:', currentPage, 'Comments Per Page:', commentsPerPage);
-      console.log('Comments received:', response.data.comments?.length);
       
       setComments(Array.isArray(response.data.comments) ? response.data.comments : Array.isArray(response.data.data) ? response.data.data : []);
       setTotalComments(response.data.total || response.data.count || 0);

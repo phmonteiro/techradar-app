@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ContactAdminModal.css';
 import axios from 'axios';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../../contexts/AuthContext.jsx';
 
 const ContactAdminModal = ({ isOpen, onClose, label, type }) => {
   const [subject, setSubject] = useState('');

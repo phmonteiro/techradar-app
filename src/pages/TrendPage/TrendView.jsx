@@ -1,5 +1,5 @@
 import React from 'react';
-import ItemView from '../../components/shared/ItemView/ItemView.jsx';
+import ItemView from '../../shared/components/ItemView/ItemView.jsx';
 
 const TrendView = () => {
   return (

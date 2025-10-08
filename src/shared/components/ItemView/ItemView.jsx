@@ -5,11 +5,11 @@ import { useAuth } from '../../../contexts/AuthContext.jsx';
 import './ItemView.css';
 import ProgressTrack from '../ProgressTrack/ProgressTrack.jsx';
 import ItemDetails from '../ItemDetails/ItemDetails.jsx';
-import Navbar from '../../Navbar/Navbar.jsx';
+import Navbar from '../../../components/Navbar/Navbar.jsx';
 import LikeButton from '../LikeButton/LikeButton';
-import ContactAdminModal from '../../ContactAdminModal/ContactAdminModal.jsx';
+import ContactAdminModal from '../ContactAdminModal/ContactAdminModal.jsx';
 import ImageAbstractSection from '../ImageAbstractSection/ImageAbstractSection.jsx';
-import CommentsSection from '../../CommentsSection/CommentsSection.jsx';
+import CommentsSection from '../CommentsSection/CommentsSection.jsx';
 
 const ItemView = ({ 
   itemType, // 'technology' or 'trend'
@@ -97,6 +97,7 @@ const ItemView = ({
 
   const isAdmin = hasRole && hasRole('admin');
   console.log("itemView isAdmin: "+isAdmin)
+  console.log("itemView item: "+JSON.stringify(item))
 
   return (
     <div className="item-view">
@@ -135,21 +136,44 @@ const ItemView = ({
             </span>
           </div>
           
-          {item.TechnologySegment && (
+
+
+          {itemType === 'trend' && item.TrendSegment && (
+            <div className="detail-item">
+              <h3>Trend Segment</h3>
+              <p>{item.TrendSegment}</p>
+            </div>
+          )}
+
+          {itemType === 'trend' && item.TrendSubSegment && (
+            <div className="detail-item">
+              <h3>Trend Sub-Segment</h3>
+              <p>{item.TrendSubSegment}</p>
+            </div>
+          )}
+
+          {itemType === 'trend' && item.TrendMaturityLevel && (
+            <div className="detail-item">
+              <h3>Trend Maturity Level</h3>
+              <p>{item.TrendMaturityLevel}</p>
+            </div>
+          )}
+          
+          {itemType === 'technology' && item.TechnologySegment && (
             <div className="detail-item">
               <h3>Technology Segment</h3>
               <p>{item.TechnologySegment}</p>
             </div>
           )}
           
-          {item.TechnologyMaturity && (
+          {itemType === 'technology' && item.TechnologyMaturity && (
             <div className="detail-item">
               <h3>Technology Maturity</h3>
               <p>{item.TechnologyMaturity}</p>
             </div>
           )}
           
-          {item.RecommendedAction && (
+          {itemType === 'technology' && item.RecommendedAction && (
             <div className="detail-item">
               <h3>Recommended Action</h3>
               <p>{item.RecommendedAction}</p>
@@ -170,35 +194,35 @@ const ItemView = ({
             </div>
           )}
 
-          {item.Category && (
+          {itemType === 'technology' && item.Category && (
             <div className="detail-item">
               <h3>Category</h3>
               <p>{item.Category}</p>
             </div>
           )}
           
-          {item.BusinessValue && (
+          {itemType === 'technology' && item.BusinessValue && (
             <div className="detail-item">
               <h3>Business Value</h3>
               <p>{item.BusinessValue}</p>
             </div>
           )}
           
-          {item.TechnicalDetails && (
+          {itemType === 'technology' && item.TechnicalDetails && (
             <div className="detail-item">
               <h3>Technical Details</h3>
               <p>{item.TechnicalDetails}</p>
             </div>
           )}
           
-          {item.Timeline && (
+          {itemType === 'technology' && item.Timeline && (
             <div className="detail-item">
               <h3>Timeline</h3>
               <p>{item.Timeline}</p>
             </div>
           )}
           
-          {item.ExpectedOutcome && (
+          {itemType === 'technology' && item.ExpectedOutcome && (
             <div className="detail-item">
               <h3>Expected Outcome</h3>
               <p>{item.ExpectedOutcome}</p>

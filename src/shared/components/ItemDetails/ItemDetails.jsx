@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ItemDetails.css';
 import { Link } from 'react-router-dom';
-import CommentsSection from '../../CommentsSection/CommentsSection.jsx';
-import RatingsDisplay, { createTechnologyRatings, createTrendRatings } from '../RatingsDisplay';
+import CommentsSection from '../CommentsSection/CommentsSection.jsx';
+import RatingsDisplay from '../RatingsDisplay/RatingsDisplay.jsx';
+import { getAverageRatingsForItem, transformApiRatings } from '../../../services/ratingsService';
 import { useAuth } from '../../../contexts/AuthContext.jsx';
 
 const ItemDetails = ({ item, itemType }) => {
   const { generatedId } = useParams();
   const [references, setReferences] = useState([]);
+  const [itemRatings, setItemRatings] = useState([]);
+  const [ratingsLoading, setRatingsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
   const navigate = useNavigate();
   const { currentUser, hasRole } = useAuth();
@@ -21,6 +24,28 @@ const ItemDetails = ({ item, itemType }) => {
     });
   };
 
+  // Load average ratings from API for display
+  const loadRatings = async () => {
+    if (!item.GeneratedID || !itemType) {
+      console.log('⚠️ loadRatings: Missing GeneratedID or itemType');
+      return;
+    }
+    
+    console.log('📥 Loading average ratings from API for:', { itemType, generatedId: item.GeneratedID });
+    setRatingsLoading(true);
+    try {
+      const apiRatings = await getAverageRatingsForItem(itemType, item.GeneratedID);
+      const transformedRatings = transformApiRatings(apiRatings);
+      console.log('📊 Loaded average ratings:', transformedRatings);
+      setItemRatings(transformedRatings);
+    } catch (error) {
+      console.error("❌ Error loading ratings:", error);
+      setItemRatings([]);
+    } finally {
+      setRatingsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (generatedId) {
       // Fetch references for the item if generatedId is available
@@ -28,6 +53,9 @@ const ItemDetails = ({ item, itemType }) => {
         .then(response => response.json())
         .then(data => setReferences(data.data))
         .catch(error => console.error("Error fetching references:", error));
+      
+      // Load ratings from API
+      loadRatings();
     }
   }, [generatedId, item.GeneratedID, itemType]);
 
@@ -39,20 +67,15 @@ const ItemDetails = ({ item, itemType }) => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
+    
     return `https://${url}`;
   };
 
-  // Get ratings configuration based on item type
-  const getRatings = () => {
-    if (itemType === 'technology') {
-      return createTechnologyRatings(item);
-    } else if (itemType === 'trend') {
-      return createTrendRatings(item);
-    }
-    return [];
+  // Handler for when ratings are updated in the modal
+  const handleRatingsUpdated = () => {
+    console.log('🔄 handleRatingsUpdated called - reloading ratings from API...');
+    loadRatings(); // Reload ratings after update
   };
-
-  const ratings = getRatings();
 
   return (
     <div className="item-details">
@@ -114,12 +137,21 @@ const ItemDetails = ({ item, itemType }) => {
 
               <div className="info-column">
                 {/* Ratings Section */}
-                {ratings.length > 0 && (
+                {(itemRatings.length > 0 || ratingsLoading) && (
                   <div className="ratings-section">
-                    <RatingsDisplay 
-                      ratings={ratings}
-                      title="Rating"
-                    />
+                    {ratingsLoading ? (
+                      <div className="ratings-loading">
+                        <p>Loading ratings...</p>
+                      </div>
+                    ) : (
+                      <RatingsDisplay 
+                        ratings={itemRatings}
+                        title="Rating"
+                        itemType={itemType}
+                        generatedId={item.GeneratedID}
+                        onRatingsUpdated={handleRatingsUpdated}
+                      />
+                    )}
                   </div>
                 )}
                 

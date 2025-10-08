@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
         const decoded = jwtDecode(token);
         setCurrentUser({
           userId: decoded.userId,
-          username: decoded.username,
           role: decoded.role,
           token
         });
@@ -54,19 +53,18 @@ export const AuthProvider = ({ children }) => {
         password
       });
       
-      const { token, userId, username, role } = response.data.data;
+      const { token, userId, role } = response.data.data;
       
       // Store the token in localStorage
       localStorage.setItem('authToken', token);
       
       setCurrentUser({
         userId: userId,
-        username: username,
         role: role,
         token
       });
       
-      return { success: true, user: { userId, username, role } };
+      return { success: true, user: { userId, role } };
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
       return { 
